@@ -11,8 +11,8 @@
 ### Instalação
 
 - Clone o repositório; ```git clone https://github.com/JoaoManoelFontes/getServices.git```
-- Crie um arquivo .env com o mesmo conteúdo do arquivo .env.example; ```cp .env.example .env```
-- Execute o comando; ```docker-compose up --d```
+- Crie um arquivo .env com o mesmo conteúdo do arquivo .env.example e modifique as variáveis de acordo com suas informações; ```cp .env.example .env```
+- Execute o comando; ```docker-compose up -d```
 - Crie uma virtualenv; ```python -m venv venv``` e ative-a; ```source venv/bin/activate```
 - Instale as dependências; ```pip install -r requirements.txt```
 - Execute as migrações; ```python manage.py migrate```
