@@ -5,7 +5,7 @@ from typing import ClassVar
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import BaseUser, Cliente
+from .models import BaseUser, Cliente, Profissional
 
 
 class BaseUserForm(UserCreationForm):
@@ -16,6 +16,15 @@ class BaseUserForm(UserCreationForm):
 class ClienteForm(BaseUserForm):
     model = Cliente
     fields: ClassVar[list[str]] = ["user"]
+
+    def __init__(self, *args: list, **kwargs: dict) -> None:
+        super().__init__(*args, **kwargs)
+        self.fields["user"].widget = forms.HiddenInput()
+
+
+class ProfissionalForm(BaseUserForm):
+    model = Profissional
+    fields: ClassVar[list[str]] = ["user", "servico"]
 
     def __init__(self, *args: list, **kwargs: dict) -> None:
         super().__init__(*args, **kwargs)
