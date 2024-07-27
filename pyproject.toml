@@ -33,7 +33,7 @@ exclude = [
 line-length = 100
 indent-width = 4
 
-ignore = ["D100", "D101", "D103", "D105", "EM101", "TRY003", "TRY002"]
+ignore = ["D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "EM101", "TRY003", "TRY002"]
 
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
