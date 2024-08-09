@@ -11,6 +11,16 @@ class Agendamento(models.Model):
         on_delete=models.CASCADE,
     )
     horario = models.ForeignKey("Horario", on_delete=models.CASCADE)
+    status_choices = (
+        ("Pendente", "Pendente"),
+        ("Concluido", "Concluido"),
+        ("Cancelado", "Cancelado"),
+    )
+    status = models.CharField(
+        max_length=9,
+        choices=status_choices,
+        default="Pendente",
+    )
 
     def __str__(self) -> str:
         return f"{self.profissional.servico.nome} - {self.cliente.username}"
