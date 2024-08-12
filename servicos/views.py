@@ -6,7 +6,7 @@ from usuarios.models import Profissional
 
 # Create your views here.
 def pagina_inicial(request: HttpRequest) -> HttpResponse:
-    profissionais = Profissional.objects.all()
+    profissionais = Profissional.objects.all().select_related()
 
     return render(
         request,
