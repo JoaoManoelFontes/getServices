@@ -1,3 +1,7 @@
 from django.urls import path
 
-urlpatterns = []
+from .views.perfil import perfil
+
+urlpatterns = [
+    path("perfil/<slug:slug>/", perfil, name="perfil"),
+]

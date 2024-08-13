@@ -11,6 +11,7 @@
         <ul>
             <li>Nome: {{ profissional.user.username }}</li>
             <li>Serviço: {{ profissional.servico.nome }}</li>
+            <a href="{% url 'perfil' profissional.slug %}"><button>Detalhes</button></a>
         </ul>
     {% endfor %}
         
