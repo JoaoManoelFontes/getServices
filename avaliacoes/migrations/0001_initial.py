@@ -6,22 +6,50 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('usuarios', '__first__'),
+        ("usuarios", "__first__"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Comentario',
+            name="Comentario",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('avaliacao', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5)])),
-                ('texto', models.TextField()),
-                ('alvo', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='usuarios.profissional')),
-                ('autor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='usuarios.cliente')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "avaliacao",
+                    models.IntegerField(
+                        default=0,
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                ("texto", models.TextField()),
+                (
+                    "alvo",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="usuarios.profissional",
+                    ),
+                ),
+                (
+                    "autor",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="usuarios.cliente",
+                    ),
+                ),
             ],
         ),
     ]

@@ -5,7 +5,6 @@ from django.db import models
 from django.utils.text import slugify
 
 
-# Create your models here.
 class BaseUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -22,7 +21,7 @@ class Cliente(models.Model):
 class Profissional(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
     servico = models.ForeignKey("servicos.Servico", on_delete=models.CASCADE)
-    slug = models.SlugField(unique=True, blank=True, editable=False)
+    slug = models.SlugField(unique=True, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Profissionais"
@@ -30,9 +29,8 @@ class Profissional(models.Model):
     def __str__(self) -> str:
         return "Profissional: " + self.user.username
 
-    def save(self, *args: any, **kwargs: any) -> None:
-        if not self.slug:
-            self.slug = slugify(
-                self.user.username,
-            )
-        super().save(*args, **kwargs)
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.slug = slugify(self.user.username)
+        super().save(force_insert, force_update, using, update_fields)

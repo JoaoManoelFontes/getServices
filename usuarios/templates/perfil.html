@@ -1,0 +1,12 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    {{ profissional.user.username }} - {{ profissional.servico.nome }}
+{% endblock title %}
+
+{% block content %}
+    <h3>{{ profissional.user.username }} - <span>{{ profissional.servico.nome }}</span></h3>
+    <p>{{ profissional.servico.descricao }}</p>
+{% endblock %}
+
+
