@@ -1,8 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
+from agendamentos.forms import HorarioForm
 from servicos.decorators import profissional_required
-from servicos.forms import HorarioForm
 from usuarios.models import Profissional
 
 
@@ -22,7 +22,6 @@ def pagina_inicial(request: HttpRequest) -> HttpResponse:
 # Realiza o cadastro de um novo horário
 @profissional_required
 def cadastrar_horario(request: HttpRequest) -> HttpResponse:
-
     if request.method == "GET":
         form = HorarioForm()
 
