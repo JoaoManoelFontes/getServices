@@ -5,29 +5,62 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('usuarios', '__first__'),
+        ("usuarios", "__first__"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Horario',
+            name="Horario",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data', models.DateTimeField()),
-                ('vago', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("data", models.DateTimeField()),
+                ("vago", models.BooleanField(default=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Agendamento',
+            name="Agendamento",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cliente', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='usuarios.cliente')),
-                ('profissional', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='usuarios.profissional')),
-                ('horario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='agendamentos.horario')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "cliente",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="usuarios.cliente",
+                    ),
+                ),
+                (
+                    "profissional",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="usuarios.profissional",
+                    ),
+                ),
+                (
+                    "horario",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="agendamentos.horario",
+                    ),
+                ),
             ],
         ),
     ]

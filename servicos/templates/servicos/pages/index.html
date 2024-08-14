@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Inicial</title>
-</head>
-<body>
-    
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <strong>Usuário atual (debug): {{ request.user }}</strong>
+
     {% for profissional in profissionais %}
         <ul>
             <li>Nome: {{ profissional.user.username }}</li>
             <li>Serviço: {{ profissional.servico.nome }}</li>
-            <a href="{% url 'perfil' profissional.slug %}"><button>Detalhes</button></a>
+            <li class="link link-primary">
+                <a href="{% url 'pagina_perfil' profissional.slug %}">Detalhes</a>
+            </li>
         </ul>
     {% endfor %}
-        
-</body>
-</html>
+{% endblock %}

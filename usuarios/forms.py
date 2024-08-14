@@ -1,31 +1,29 @@
-from __future__ import annotations
-
-from typing import ClassVar
-
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 
-from .models import BaseUser, Cliente, Profissional
-
-
-class BaseUserForm(UserCreationForm):
-    model = BaseUser
-    fields: ClassVar[list[str]] = ["username", "email", "password1", "password2"]
+from usuarios.models import BaseUser
 
 
-class ClienteForm(BaseUserForm):
-    model = Cliente
-    fields: ClassVar[list[str]] = ["user"]
+class RegistrarForm(UserCreationForm):
+    tipo_usuario = forms.ChoiceField(
+        choices=[("cliente", "Cliente"), ("profissional", "Profissional")]
+    )
 
-    def __init__(self, *args: list, **kwargs: dict) -> None:
-        super().__init__(*args, **kwargs)
-        self.fields["user"].widget = forms.HiddenInput()
+    class Meta:
+        model = BaseUser
+        fields = ["username", "password1", "password2", "tipo_usuario"]
 
 
-class ProfissionalForm(BaseUserForm):
-    model = Profissional
-    fields: ClassVar[list[str]] = ["user", "servico"]
-
-    def __init__(self, *args: list, **kwargs: dict) -> None:
-        super().__init__(*args, **kwargs)
-        self.fields["user"].widget = forms.HiddenInput()
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label="Usuário",
+        widget=forms.TextInput(
+            attrs={"class": "input input-bordered w-full", "placeholder": "ruangustavo"}
+        ),
+    )
+    password = forms.CharField(
+        label="Senha",
+        widget=forms.PasswordInput(
+            attrs={"class": "input input-bordered w-full", "placeholder": "********"}
+        ),
+    )
