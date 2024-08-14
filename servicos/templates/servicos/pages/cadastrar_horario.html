@@ -8,8 +8,8 @@
 <body>
     <form method="POST">
         {% csrf_token %}
-        {{ form.data }}
-        {{ form.vago }}
+        <h1>Olá {{ request.user.username }}! Cadastre um novo horário</h1>
+        {{ form.as_p }}
         <button type="submit">Cadastrar</button>
     </form>
 </body>

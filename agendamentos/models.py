@@ -27,14 +27,12 @@ class Agendamento(models.Model):
 
 
 class Horario(models.Model):
-    profissional = (
-        models.ForeignKey(
+    profissional = models.ForeignKey(
             "usuarios.Profissional",
             on_delete=models.CASCADE,
-        ),
     )
     data = models.DateTimeField()
     vago = models.BooleanField(default=True)
 
     def __str__(self) -> str:
-        return f"{self.profissional.nome} - {self.data}"
+        return f"{self.profissional.user.username} - {self.data}"

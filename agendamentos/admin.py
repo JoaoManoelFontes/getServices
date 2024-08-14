@@ -2,5 +2,8 @@ from django.contrib import admin
 
 from .models import Horario
 
+
 # Register your models here.
-admin.site.register(Horario)
+@admin.register(Horario)
+class HorarioAdmin(admin.ModelAdmin):
+    list_display = ("id", "profissional", "data", "vago")
