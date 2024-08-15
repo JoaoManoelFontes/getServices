@@ -9,8 +9,9 @@ class Comentario(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(5)],
     )
     texto = models.TextField()
-    autor = models.ForeignKey("usuarios.Cliente", on_delete=models.CASCADE)
-    alvo = models.ForeignKey("usuarios.Profissional", on_delete=models.CASCADE)
+    cliente = models.ForeignKey("usuarios.Cliente", on_delete=models.CASCADE)
+    profissional = models.ForeignKey("usuarios.Profissional", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.texto

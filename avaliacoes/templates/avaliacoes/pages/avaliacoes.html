@@ -1,0 +1,9 @@
+<section>
+<h2>Avaliações de {{profissional.user.username}} - {{media_avaliacao}}</h2>
+{% for comentario in comentarios %}
+    <h3>{{comentario.cliente.user.username}} | <span>{{comentario.avaliacao}}</span> </h3>
+    <!-- TODO : Adicionar e formatar data do comentário  {{comentario.created_at}} -->
+    <p>{{comentario.texto}}</p>
+    <hr>
+{% endfor %}
+</section>

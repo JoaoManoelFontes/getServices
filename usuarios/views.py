@@ -1,12 +1,15 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as DjangoLoginView
-from django.contrib import messages
-from django.views.generic import CreateView, DetailView
+from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
-from .forms import LoginForm, RegistrarForm
+from django.views.generic import CreateView, DetailView
 
-from .models import Cliente, Profissional
+from avaliacoes import utils
 from servicos.models import Servico
+
+from .forms import LoginForm, RegistrarForm
+from .models import Cliente, Profissional
 
 
 class PerfilProfissionalView(DetailView):
@@ -14,6 +17,14 @@ class PerfilProfissionalView(DetailView):
     template_name = "perfil.html"
     context_object_name = "profissional"
     slug_url_kwarg = "slug"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        avaliacoes = utils.get_avaliacoes(self.object)
+        context["comentarios"] = avaliacoes["comentarios"]
+        context["media_avaliacao"] = avaliacoes["media_avaliacao"]
+        return context
 
 
 class RegistrarView(CreateView):
