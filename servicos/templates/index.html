@@ -1,0 +1,16 @@
+{% extends 'layout/base.html' %}
+
+
+{% block title %} Página Inicial {% endblock title %}
+
+
+{% block content %}
+<div class="flex items-center justify-center">
+    <h1>Profissionais cadastrados no sistema</h1>
+    {% for profissional in profissionais %}
+    <p>Nome: {{ profissional.user.username }}</p>
+    <p>Serviço: {{ profissional.servico.nome }}</p>
+</div>
+{% endfor %}
+
+{% endblock content %}

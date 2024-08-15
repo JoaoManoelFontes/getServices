@@ -12,7 +12,7 @@ def pagina_inicial(request: HttpRequest) -> HttpResponse:
 
     return render(
         request,
-        "servicos/pages/index.html",
+        "index.html",
         {
             "profissionais": profissionais,
         },
@@ -39,7 +39,7 @@ def cadastrar_horario(request: HttpRequest) -> HttpResponse:
 
     return render(
         request,
-        "servicos/pages/cadastrar_horario.html",
+        "cadastrar_horario.html",
         {
             "form": form,
         },
