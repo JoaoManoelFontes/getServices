@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from avaliacoes.models import Comentario
+from avaliacoes.models import Avaliacao
 
 # Register your models here.
-admin.site.register(Comentario)
+admin.site.register(Avaliacao)

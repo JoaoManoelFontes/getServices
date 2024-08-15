@@ -1,11 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as DjangoLoginView
-from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView
 
-from avaliacoes import utils
+from avaliacoes import selectors
 from servicos.models import Servico
 
 from .forms import LoginForm, RegistrarForm
@@ -20,9 +19,8 @@ class PerfilProfissionalView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        avaliacoes = utils.get_avaliacoes(self.object)
-        context["comentarios"] = avaliacoes["comentarios"]
+        avaliacoes = selectors.get_avaliacoes(self.object)
+        context["avaliacoes"] = avaliacoes["avaliacoes"]
         context["media_avaliacao"] = avaliacoes["media_avaliacao"]
         return context
 
