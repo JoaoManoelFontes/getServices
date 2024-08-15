@@ -9,7 +9,7 @@ class BaseUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    profile_image = models.FileField(upload_to='users/%y/%m/%d', null=True, blank=True)
+    profile_image = models.FileField(upload_to="users/%y/%m/%d", null=True, blank=True)
 
 
 class Cliente(models.Model):
