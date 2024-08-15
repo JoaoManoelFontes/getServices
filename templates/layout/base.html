@@ -12,8 +12,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="prose">
+<body class="min-h-svh">
+  {% include 'partials/header.html' %}
   {% block content %}
   {% endblock content %}
+</body>
 
 </html>
