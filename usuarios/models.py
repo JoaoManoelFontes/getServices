@@ -31,7 +31,7 @@ class Profissional(models.Model):
         return "Profissional: " + self.user.username
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+        self, force_insert=False, force_update=False, using=None, update_fields=None,
     ):
         self.slug = slugify(self.user.username)
         super().save(force_insert, force_update, using, update_fields)

@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-from .views import LoginView, RegistrarView, PerfilProfissionalView
+
+from .views import LoginView, PerfilProfissionalView, RegistrarView
 
 urlpatterns = [
     path("cadastrar", RegistrarView.as_view(), name="pagina_cadastro"),

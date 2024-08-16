@@ -35,7 +35,23 @@ line-length = 88
 indent-width = 4
 
 # Django & sort imports.
-lint.select = ["DJ", "I"]
+lint.select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # django
+    "DJ"
+]
+lint.ignore = []
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 lint.fixable = ["ALL"]
