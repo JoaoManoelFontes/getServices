@@ -53,7 +53,7 @@ class RegistrarView(CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        for field, errors in form.errors.items():
+        for errors in form.errors.values():
             for error in errors:
                 messages.error(self.request, error)
         return super().form_invalid(form)

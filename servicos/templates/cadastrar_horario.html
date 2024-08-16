@@ -1,34 +1,115 @@
 {% extends 'layout/base.html' %}
 
-
-{% block title %} Cadastrar Horário {% endblock title %}
-
-
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <div class="card">
-        <div class="card-body">
-            <h1 class="card-title">Cadastre seus horários</h1>
+    <div class="max-w-2xl mx-auto">
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
 
+            <div class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">{{ form.data_inicio.label }}</span>
+                </div>
+                {{ form.data_inicio }}
+            </div>
 
-            <form method="post" class="space-y-4">
-                {% csrf_token %}
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">{{ form.data_fim.label }}</span>
+                </div>
+                {{ form.data_fim }}
+            </label>
 
-                <label class="form-control w-full">
-                    <div class="label">
-                        <span class="label-text">{{ form.data }}</span>
-                    </div>
+            <div class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">{{ form.frequencia.label }}</span>
+                </div>
+                {{ form.frequencia }}
+            </div>
+
+            <div id="dias_semana_container" class="form-control w-full space-y-1 hidden">
+                <div class="label">
+                    <span class="label-text">{{ form.dias_semana.label }}</span>
+                </div>
+
+                <label for="id_dias_semana_0" class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="dias_semana" value="0" id="id_dias_semana_0"
+                           class="checkbox checkbox-primary checkbox-sm">
+                    <span class="label-text">Segunda-feira</span>
                 </label>
 
-                <div class="label">
-                    <span class="label-text">{{ form.vago }}</span>
-                </div>
+                <label for="id_dias_semana_1" class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="dias_semana" value="1" id="id_dias_semana_1"
+                           class="checkbox checkbox-primary checkbox-sm">
+                    <span class="label-text">Terça-feira</span>
+                </label>
 
-                <div class="card-actions items-center justify-between">
-                    <button type="submit" class="btn btn-primary block">Cadastrar</button>
+                <label for="id_dias_semana_2" class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="dias_semana" value="2" id="id_dias_semana_2"
+                           class="checkbox checkbox-primary checkbox-sm">
+                    <span class="label-text">Quarta-feira</span>
+                </label>
+
+                <label for="id_dias_semana_3" class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="dias_semana" value="3" id="id_dias_semana_3"
+                           class="checkbox checkbox-primary checkbox-sm">
+                    <span class="label-text">Quinta-feira</span>
+                </label>
+
+                <label for="id_dias_semana_4" class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="dias_semana" value="4" id="id_dias_semana_4"
+                           class="checkbox checkbox-primary checkbox-sm">
+                    <span class="label-text">Sexta-feira</span>
+                </label>
+
+                <label for="id_dias_semana_5" class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="dias_semana" value="5" id="id_dias_semana_5"
+                           class="checkbox checkbox-primary checkbox-sm">
+                    <span class="label-text">Sábado</span>
+                </label>
+
+                <label for="id_dias_semana_6" class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="dias_semana" value="6" id="id_dias_semana_6"
+                           class="checkbox checkbox-primary checkbox-sm">
+                    <span class="label-text">Domingo</span>
+                </label>
+
+            </div>
+
+            <div id="data_fim_recorrencia_container" class="form-control w-full hidden">
+                <div class="label">
+                    <span class="label-text">{{ form.data_fim_recorrencia.label }}</span>
                 </div>
-            </form>
-        </div>
+                {{ form.data_fim_recorrencia }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar horário</button>
+        </form>
     </div>
-</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var frequenciaSelect = document.getElementById('{{ form.frequencia.id_for_label }}');
+            var diasSemanaContainer = document.getElementById('dias_semana_container');
+            var dataFimRecorrenciaContainer = document.getElementById('data_fim_recorrencia_container');
+
+            function toggleFields() {
+                var frequencia = frequenciaSelect.value;
+                if (frequencia === 'UNICA') {
+                    diasSemanaContainer.classList.add('hidden')
+                    dataFimRecorrenciaContainer.classList.add('hidden')
+                } else {
+                    dataFimRecorrenciaContainer.classList.remove('hidden')
+
+                    if (frequencia === 'SEMANAL') {
+                        diasSemanaContainer.classList.remove('hidden')
+                    } else {
+                        diasSemanaContainer.classList.add('hidden')
+                    }
+                }
+            }
+
+            frequenciaSelect.addEventListener('change', toggleFields);
+            toggleFields();
+        });
+    </script>
 {% endblock content %}

@@ -9,4 +9,5 @@ def profissional_required(view_func: any) -> any:
         if hasattr(request.user, "profissional"):
             return view_func(request, *args, **kwargs)
         return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
+
     return _wrapped_view
