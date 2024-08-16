@@ -1,0 +1,37 @@
+<div data-menu-background class="bg-zinc-800 fixed inset-0 opacity-75 hidden z-10"></div>
+<aside data-menu class="bg-blue-700 min-w-80 h-screen flex flex-col gap-4 fixed top-0 pt-16 right-full transition-all z-20">
+  <span data-menu-close class="text-[3rem] w-8 h-8 leading-8 text-white absolute top-4 right-4">
+    &times;
+  </span>
+    <section class="p-4 flex flex-col gap-2 rounded-md">
+        <h2 class="text-white text-xl">Agendamentos</h2>
+        <ul class="flex flex-col gap-2">
+            <li>
+                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
+            </li>
+            <li>
+                {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
+            </li>
+            <li>
+                {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
+            </li>
+            <li>
+                {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
+            </li>
+        </ul>
+    </section>
+    <section class="p-4 flex flex-col gap-2 rounded-md">
+        <h2 class="text-white text-xl">Serviços</h2>
+        <ul class="flex flex-col gap-2">
+            <li>
+                {% include 'servicos/partials/services_card.html' with service="Construção Civil" %}
+            </li>
+            <li>
+                {% include 'servicos/partials/services_card.html' with service="Cuidados Domésticos" %}
+            </li>
+            <li>
+                {% include 'servicos/partials/services_card.html' with service="Artes Gráficas" %}
+            </li>
+        </ul>
+    </section>
+</aside>
