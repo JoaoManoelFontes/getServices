@@ -9,10 +9,15 @@
     <link rel="stylesheet" href="{% static 'css/daisyui.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/typography.min.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/aside.js' %}" defer></script>
 </head>
 <body class="min-h-svh">
 {% include 'partials/header.html' %}
-{% block content %}
-{% endblock content %}
+<div class="flex gap-6 max-w-[1140px] px-[50px] m-auto my-8 box-content max-sm:px-8">
+    {% include 'partials/aside.html' %}
+    {% block content %}
+    {% endblock content %}
+</div>
 </body>
 </html>
