@@ -3,35 +3,53 @@
 {% block content %}
     <div class="relative max-lg:hidden">
         <aside class="min-w-72 flex flex-col gap-4 sticky top-24">
-            <section class="p-4 bg-blue-500 rounded-md">
-                <ul class="flex flex-col gap-2">
-                    <li>
-                        {% include 'partials/appointment_card.html' with date="08/11" time="13:00" %}
-                    </li>
-                    <li>
-                        {% include 'partials/appointment_card.html' with date="21/11" time="15:20" %}
-                    </li>
-                    <li>
-                        {% include 'partials/appointment_card.html' with date="09/12" time="07:45" %}
-                    </li>
-                    <li>
-                        {% include 'partials/appointment_card.html' with date="23/12" time="12:30" %}
-                    </li>
-                </ul>
-            </section>
-            <section class="p-4 bg-blue-500 rounded-md">
-                <ul class="flex flex-col gap-2">
-                    <li>
-                        {% include 'partials/services_card.html' with service="Construção Civil" %}
-                    </li>
-                    <li>
-                        {% include 'partials/services_card.html' with service="Cuidados Domésticos" %}
-                    </li>
-                    <li>
-                        {% include 'partials/services_card.html' with service="Artes Gráficas" %}
-                    </li>
-                </ul>
-            </section>
+            <div class="flex flex-col gap-4 overflow-auto">
+                <section class="p-4 bg-blue-500 rounded-md">
+                    <ul class="flex flex-col gap-2">
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
+                        </li>
+                    </ul>
+                </section>
+                <section class="p-4 bg-blue-500 rounded-md">
+                    <ul class="flex flex-col gap-2">
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00" end_time="14:15" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20" end_time="16:20" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="09/12" start_time="07:45" end_time="9:30" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="23/12" start_time="12:30" end_time="17:30" %}
+                        </li>
+                    </ul>
+                </section>
+                <section class="p-4 bg-blue-500 rounded-md">
+                    <ul class="flex flex-col gap-2">
+                        <li>
+                            {% include 'partials/services_card.html' with service="Construção Civil" %}
+                        </li>
+                        <li>
+                            {% include 'partials/services_card.html' with service="Cuidados Domésticos" %}
+                        </li>
+                        <li>
+                            {% include 'partials/services_card.html' with service="Artes Gráficas" %}
+                        </li>
+                    </ul>
+                </section>
+            </div>
         </aside>
     </div>
     <main class="flex flex-col gap-4 grow">
