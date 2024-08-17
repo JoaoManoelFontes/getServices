@@ -11,14 +11,24 @@ class RegistrarForm(UserCreationForm):
 
     class Meta:
         model = BaseUser
-        fields = ["username", "password1", "password2", "tipo_usuario"]
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "password1",
+            "password2",
+            "tipo_usuario",
+        ]
 
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
         label="Usuário",
         widget=forms.TextInput(
-            attrs={"class": "input input-bordered w-full", "placeholder": "ruangustavo"},
+            attrs={
+                "class": "input input-bordered w-full",
+                "placeholder": "ruangustavo",
+            },
         ),
     )
     password = forms.CharField(
