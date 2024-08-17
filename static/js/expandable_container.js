@@ -1,5 +1,5 @@
 {
-  const EXPANDALBE_BUTTON_VALUES = {
+  const EXPANDABLE_BUTTON_VALUES = {
     "Ver Mais ↓": "Ver Menos ↑",
     "Ver Menos ↑": "Ver Mais ↓",
   };
@@ -17,13 +17,13 @@
     );
 
     expandableButton.addEventListener("click", () => {
-      toogleExpandableContainer(expandableList, expandableButton);
+      toggleExpandableContainer(expandableList, expandableButton);
     });
   });
 
-  function toogleExpandableContainer(expandableList, expandableButton) {
+  function toggleExpandableContainer(expandableList, expandableButton) {
     expandableButton.innerText =
-      EXPANDALBE_BUTTON_VALUES[expandableButton.innerText];
+      EXPANDABLE_BUTTON_VALUES[expandableButton.innerText];
     expandableList.classList.toggle("max-h-60");
     expandableList.classList.toggle("max-h-80");
     expandableList.classList.toggle("overflow-hidden");
