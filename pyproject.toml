@@ -51,7 +51,7 @@ lint.select = [
     # django
     "DJ"
 ]
-lint.ignore = []
+lint.ignore = ["E501"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 lint.fixable = ["ALL"]
