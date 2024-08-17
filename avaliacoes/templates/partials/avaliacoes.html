@@ -1,7 +1,0 @@
-<section>
-    <h2>Avaliações de {{profissional.user.username}} - {{media_avaliacao}}</h2>
-    {% for avaliacao in avaliacoes %}
-    <h3>{{avaliacao.cliente.user.username}} | <span>{{avaliacao.nota}}</span></h3>
-    <p>{{avaliacao.comentario}}</p>
-    {% endfor %}
-</section>

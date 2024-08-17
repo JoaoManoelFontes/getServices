@@ -5,10 +5,86 @@
 {% endblock title %}
 
 {% block content %}
-    <h3>{{ profissional.user.username }} - <span>{{ profissional.servico.nome }}</span></h3>
-    <p>{{ profissional.servico.descricao }}</p>
-    <br>
-    {% include 'partials/avaliacoes.html' %}
+    <div class="bg-[url('https://www.simplilearn.com/ice9/free_resources_article_thumb/IsGraphic_DesignAGoodCareerb.jpg')] bg-center h-80 w-full absolute top-20 left-0 bg-no-repeat bg-cover -z-10"></div>
+    <main class="w-full mt-52">
+        <article class="bg-zinc-100 p-8 rounded-md flex gap-8">
+            <div class="w-full flex gap-4 max-md:flex-col">
+                <div class="flex flex-col justify-start items-center gap-4 max-md:flex-row max-md:items-start">
+                    <img class="rounded-md max-w-36 max-h-36" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="User profile image">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-xl font-bold text-black md:hidden">{{ profissional.user.username }}</h2>
+                        <span class="text-sm">{{ profissional.servico.nome }}</span>
+                        <div class="flex justify-center gap-1 max-md:justify-start">
+                            <span class="inline-block mask mask-star-2 bg-orange-400 size-4"></span>
+                            <span class="text-sm">{{ media_avaliacao }} / 5,0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-start items-start gap-2">
+                    <h2 class="text-xl font-bold text-black max-md:hidden">{{ profissional.user.username }}</h2>
+                    <p>{{ profissional.servico.descricao }}</p>
+                </div>
+            </div>
+            <div class="flex justify-center items-center min-w-max max-lg:hidden">
+                {% include 'partials/ratings.html' %}
+            </div>
+        </article>
+        <div class="flex gap-6 mt-8">
+            <div class="relative max-lg:hidden">
+                <aside class="min-w-72 flex flex-col gap-4 sticky top-24">
+                    <section class="p-4 bg-blue-500 rounded-md">
+                        <ul class="flex flex-col gap-2">
+                            <li>
+                                {% include 'partials/appointment_card.html' with date="08/11" time="13:00" %}
+                            </li>
+                            <li>
+                                {% include 'partials/appointment_card.html' with date="21/11" time="15:20" %}
+                            </li>
+                            <li>
+                                {% include 'partials/appointment_card.html' with date="09/12" time="07:45" %}
+                            </li>
+                            <li>
+                                {% include 'partials/appointment_card.html' with date="23/12" time="12:30" %}
+                            </li>
+                        </ul>
+                    </section>
+                    <section class="p-4 bg-blue-500 rounded-md">
+                        <ul class="flex flex-col gap-2">
+                            <li>
+                                {% include 'partials/services_card.html' with service="Construção Civil" %}
+                            </li>
+                            <li>
+                                {% include 'partials/services_card.html' with service="Cuidados Domésticos" %}
+                            </li>
+                            <li>
+                                {% include 'partials/services_card.html' with service="Artes Gráficas" %}
+                            </li>
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+            <section class="flex flex-col gap-4 grow">
+                <article class="flex flex-col p-4 bg-zinc-100 gap-4 rounded-md max-sm:gap-2">
+                    <form class="w-full flex flex-col gap-4">
+                        <textarea class="w-full min-h-40 border-zinc-200 border-2 resize-none p-1 px-2"></textarea>
+                        <div class="w-full flex justify-between">
+                            {% include 'partials/stars.html' with size=6 %}
+                            <button class="bg-blue-500 py-2 px-8 text-white">Avaliar</button>
+                        </div>
+                    </form>
+                </article>
+
+                {% for avaliacao in avaliacoes %}
+                    {% include 'partials/info_card.html' with name=avaliacao.cliente.user.username rating=avaliacao.nota text=avaliacao.comentario %}
+                {% endfor %}
+
+                {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem tempore praesentium optio ut repellendus expedita laborum natus cumque. Maiores laudantium vitae modi, provident nobis unde, excepturi officiis assumenda est quo repellendus sunt maxime! Corporis nulla accusantium, optio illo deserunt pariatur quia omnis? Doloribus rem facere accusamus quibusdam labore, eum, vitae dolorum commodi, a veritatis perferendis id necessitatibus nisi laudantium cumque dolore ea pariatur quis quae nostrum. Illum distinctio dolore nisi tempore, incidunt atque? Quod, esse!" %}
+                {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum dignissimos officia pariatur quam dolores ipsa minus, facere facilis quaerat assumenda harum modi? Sint, ullam at alias ratione aut in unde." %}
+                {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta officia molestias omnis quam, deserunt velit veniam a libero possimus fugiat maiores praesentium voluptate nisi ipsa. Inventore ut earum nostrum eaque ullam modi mollitia quo expedita iusto rerum accusamus asperiores tenetur, praesentium esse deleniti, sint eum harum similique reiciendis facilis! Amet cum provident quisquam recusandae non laborum culpa quidem temporibus pariatur ipsum. Animi, nostrum minima dicta saepe enim cumque optio ex distinctio necessitatibus? Suscipit ab praesentium harum dignissimos vero sint fugiat similique omnis beatae assumenda quibusdam quia dolores quam iusto ea dicta, sit minus distinctio error tenetur consequuntur. Facilis error repellat officiis ad cum architecto sunt consectetur deleniti, recusandae, incidunt ipsam aspernatur necessitatibus atque quisquam accusamus dolore, laudantium quis enim. Iure?" %}
+                {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem tempore praesentium optio ut repellendus expedita laborum natus cumque. Maiores laudantium vitae modi, provident nobis unde, excepturi officiis assumenda est quo repellendus sunt maxime! Corporis nulla accusantium, optio illo deserunt pariatur quia omnis? Doloribus rem facere accusamus quibusdam labore, eum, vitae dolorum commodi, a veritatis perferendis id necessitatibus nisi laudantium cumque dolore ea pariatur quis quae nostrum. Illum distinctio dolore nisi tempore, incidunt atque? Quod, esse!" %}
+            </section>
+        </div>
+    </main>
 {% endblock %}
 
 

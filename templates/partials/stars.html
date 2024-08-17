@@ -1,7 +1,38 @@
+{% if size %}
 <div class="rating gap-0.5">
-    <span class="mask mask-star-2 bg-orange-400 size-4"></span>
-    <span class="mask mask-star-2 bg-orange-400 size-4"></span>
-    <span class="mask mask-star-2 bg-orange-400 size-4"></span>
-    <span class="mask mask-star-2 bg-orange-400 size-4"></span>
-    <span class="mask mask-star-2 bg-orange-400 size-4"></span>
+    {% if immutable %}
+        {% for number in 12345|make_list %}
+            {% if rating|stringformat:"i" >= number %}
+                <span class="mask mask-star-2 bg-orange-400 size-{{ size }}"></span>
+            {% else %}
+                <span class="mask mask-star-2 bg-orange-400 size-{{ size }} opacity-20"></span>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <span class="mask mask-star-2 bg-orange-400 size-{{ size }}"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-{{ size }}"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-{{ size }}"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-{{ size }}"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-{{ size }}"></span>
+    {% endif %}
 </div>
+{% else %}
+<div class="rating gap-0.5">
+    {% if immutable %}
+        {% for number in 12345|make_list %}
+            {% if rating|stringformat:"i" >= number %}
+                <span class="mask mask-star-2 bg-orange-400 size-4"></span>
+            {% else %}
+                <span class="mask mask-star-2 bg-orange-400 size-4 opacity-20"></span>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <span class="mask mask-star-2 bg-orange-400 size-4"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-4"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-4"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-4"></span>
+        <span class="mask mask-star-2 bg-orange-400 size-4"></span>
+    {% endif %}
+</div>
+
+{% endif %}
