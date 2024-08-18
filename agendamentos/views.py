@@ -46,7 +46,9 @@ def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
         }
 
     else:  # Lista o número de horários de cada mês
-        resumos_meses = Horario.objects.annotate(
+        resumos_meses = Horario.objects.filter(
+            profissional__user=request.user
+        ).annotate(
             month=TruncMonth('data_inicio')
             ).values(
             'month'
