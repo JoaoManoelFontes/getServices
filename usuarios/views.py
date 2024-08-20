@@ -22,13 +22,12 @@ class PerfilProfissionalView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         avaliacoes = selectors.get_avaliacoes(self.object)
-        avaliacoes_notas = Avaliacao.objects.filter(
-            profissional=self.object
-        ).values(
-            'nota'
-        ).annotate(
-            count=Count('id')
-        ).order_by('-nota')
+        avaliacoes_notas = (
+            Avaliacao.objects.filter(profissional=self.object)
+            .values("nota")
+            .annotate(count=Count("id"))
+            .order_by("-nota")
+        )
 
         context["avaliacoes"] = avaliacoes["avaliacoes"]
         context["media_avaliacao"] = avaliacoes["media_avaliacao"]
