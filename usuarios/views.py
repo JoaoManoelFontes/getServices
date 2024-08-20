@@ -32,6 +32,7 @@ class PerfilProfissionalView(DetailView):
         context["avaliacoes"] = avaliacoes["avaliacoes"]
         context["media_avaliacao"] = avaliacoes["media_avaliacao"]
         context["avaliacoes_notas"] = avaliacoes_notas
+        context["total"] = len(avaliacoes["avaliacoes"])
         return context
 
 
