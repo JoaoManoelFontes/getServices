@@ -36,29 +36,27 @@ def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
         horarios = Horario.objects.filter(
             data_inicio__year=ano,
             data_inicio__month=mes,
-            profissional__user=request.user
-        ).order_by('data_inicio')
+            profissional__user=request.user,
+        ).order_by("data_inicio")
         context = {
-            'horarios': horarios,
-            'ano': ano,
-            'mes': mes,
-            'view_type': 'detalhes',
+            "horarios": horarios,
+            "ano": ano,
+            "mes": mes,
+            "view_type": "detalhes",
         }
 
     else:  # Lista o número de horários de cada mês
-        resumos_meses = Horario.objects.filter(
-            profissional__user=request.user
-        ).annotate(
-            month=TruncMonth('data_inicio')
-        ).values(
-            'month'
-        ).annotate(
-            count=Count('id')
-        ).order_by('month')
+        resumos_meses = (
+            Horario.objects.filter(profissional__user=request.user)
+            .annotate(month=TruncMonth("data_inicio"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("month")
+        )
 
         context = {
-            'resumo_meses': resumos_meses,
-            'view_type': 'resumo',
+            "resumo_meses": resumos_meses,
+            "view_type": "resumo",
         }
 
     return render(

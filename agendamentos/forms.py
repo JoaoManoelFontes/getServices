@@ -9,10 +9,16 @@ class HorarioForm(forms.ModelForm):
         fields = ["data_inicio", "data_fim", "frequencia", "data_fim_recorrencia"]
         widgets = {
             "data_inicio": forms.DateTimeInput(
-                attrs={"type": "datetime-local", "class": "input input-bordered w-full"},
+                attrs={
+                    "type": "datetime-local",
+                    "class": "input input-bordered w-full",
+                },
             ),
             "data_fim": forms.DateTimeInput(
-                attrs={"type": "datetime-local", "class": "input input-bordered w-full"},
+                attrs={
+                    "type": "datetime-local",
+                    "class": "input input-bordered w-full",
+                },
             ),
             "data_fim_recorrencia": forms.DateInput(
                 attrs={"type": "date", "class": "input input-bordered w-full"},

@@ -46,7 +46,9 @@ class Horario(models.Model):
         ("MENSAL", "Mensalmente"),
     ]
     frequencia = models.CharField(
-        max_length=10, choices=FREQUENCIA_CHOICES, default="UNICA",
+        max_length=10,
+        choices=FREQUENCIA_CHOICES,
+        default="UNICA",
     )
 
     dias_semana = models.CharField(max_length=13, blank=True, null=True)
