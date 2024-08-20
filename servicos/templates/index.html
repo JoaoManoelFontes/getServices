@@ -32,7 +32,8 @@
                         </li>
                     </ul>
                     <div class="flex w-full justify-center items-center text-sm pt-2">
-                        <span data-expandable-button class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                        <span data-expandable-button
+                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
                     </div>
                 </section>
                 <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
@@ -57,7 +58,8 @@
                         </li>
                     </ul>
                     <div class="flex w-full justify-center items-center text-sm pt-2">
-                        <span data-expandable-button class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                        <span data-expandable-button
+                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
                     </div>
                 </section>
                 <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
@@ -91,16 +93,16 @@
                         </li>
                     </ul>
                     <div class="flex w-full justify-center items-center text-sm pt-2">
-                        <span data-expandable-button class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                        <span data-expandable-button
+                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
                     </div>
                 </section>
             </div>
         </aside>
     </div>
     <main class="flex flex-col gap-4 grow">
-        {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem tempore praesentium optio ut repellendus expedita laborum natus cumque. Maiores laudantium vitae modi, provident nobis unde, excepturi officiis assumenda est quo repellendus sunt maxime! Corporis nulla accusantium, optio illo deserunt pariatur quia omnis? Doloribus rem facere accusamus quibusdam labore, eum, vitae dolorum commodi, a veritatis perferendis id necessitatibus nisi laudantium cumque dolore ea pariatur quis quae nostrum. Illum distinctio dolore nisi tempore, incidunt atque? Quod, esse!" %}
-        {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum dignissimos officia pariatur quam dolores ipsa minus, facere facilis quaerat assumenda harum modi? Sint, ullam at alias ratione aut in unde." %}
-        {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta officia molestias omnis quam, deserunt velit veniam a libero possimus fugiat maiores praesentium voluptate nisi ipsa. Inventore ut earum nostrum eaque ullam modi mollitia quo expedita iusto rerum accusamus asperiores tenetur, praesentium esse deleniti, sint eum harum similique reiciendis facilis! Amet cum provident quisquam recusandae non laborum culpa quidem temporibus pariatur ipsum. Animi, nostrum minima dicta saepe enim cumque optio ex distinctio necessitatibus? Suscipit ab praesentium harum dignissimos vero sint fugiat similique omnis beatae assumenda quibusdam quia dolores quam iusto ea dicta, sit minus distinctio error tenetur consequuntur. Facilis error repellat officiis ad cum architecto sunt consectetur deleniti, recusandae, incidunt ipsam aspernatur necessitatibus atque quisquam accusamus dolore, laudantium quis enim. Iure?" %}
-        {% include 'partials/info_card.html' with name="Lorem Ipsum Dolor" rating=5 text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem tempore praesentium optio ut repellendus expedita laborum natus cumque. Maiores laudantium vitae modi, provident nobis unde, excepturi officiis assumenda est quo repellendus sunt maxime! Corporis nulla accusantium, optio illo deserunt pariatur quia omnis? Doloribus rem facere accusamus quibusdam labore, eum, vitae dolorum commodi, a veritatis perferendis id necessitatibus nisi laudantium cumque dolore ea pariatur quis quae nostrum. Illum distinctio dolore nisi tempore, incidunt atque? Quod, esse!" %}
+        {% for profissional in profissionais %}
+            {% include 'partials/info_card.html' with name=profissional.user.name rating=profissional.media_avaliacao text=profissional.descricao profile=profissional.user.profile_image slug=profissional.slug %}
+        {% endfor %}
     </main>
 {% endblock %}

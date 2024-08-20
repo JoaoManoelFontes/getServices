@@ -44,10 +44,13 @@ class RegistrarView(CreateView):
             Cliente.objects.create(user=usuario)
         elif tipo_usuario == "profissional":
             servico_id = self.request.POST.get("servico")
+            descricao = self.request.POST.get("descricao")
 
             if servico_id:
                 servico = Servico.objects.get(id=servico_id)
-                Profissional.objects.create(user=usuario, servico=servico)
+                Profissional.objects.create(
+                    user=usuario, servico=servico, descricao=descricao
+                )
 
         login(self.request, usuario)
         return super().form_valid(form)

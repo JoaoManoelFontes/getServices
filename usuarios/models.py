@@ -11,6 +11,10 @@ class BaseUser(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     profile_image = models.FileField(upload_to="users/%y/%m/%d", null=True, blank=True)
 
+    @property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Cliente(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
@@ -23,6 +27,7 @@ class Profissional(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
     servico = models.ForeignKey("servicos.Servico", on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, blank=True, null=True)
+    descricao = models.TextField()
 
     class Meta:
         verbose_name_plural = "Profissionais"

@@ -30,6 +30,14 @@
                         </div>
                     </div>
 
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">Usuário</span>
+                        </div>
+                        <input type="text" name="username" placeholder="ruangustavo"
+                               class="input input-bordered w-full"/>
+                    </label>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 md:gap-2">
                         <label class="form-control w-full">
                             <div class="label">
@@ -48,31 +56,25 @@
                         </label>
                     </div>
 
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text">Usuário</span>
-                        </div>
-                        <input type="text" name="username" placeholder="ruangustavo"
-                               class="input input-bordered w-full"/>
-                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-2">
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Senha</span>
+                            </div>
+                            <input type="password" name="password1" placeholder="********"
+                                   class="input input-bordered w-full"/>
+                        </label>
 
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text">Senha</span>
-                        </div>
-                        <input type="password" name="password1" placeholder="********"
-                               class="input input-bordered w-full"/>
-                    </label>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Confirme sua senha</span>
+                            </div>
+                            <input type="password" name="password2" placeholder="********"
+                                   class="input input-bordered w-full"/>
+                        </label>
+                    </div>
 
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text">Confirme sua senha</span>
-                        </div>
-                        <input type="password" name="password2" placeholder="********"
-                               class="input input-bordered w-full"/>
-                    </label>
-
-                    <div id="cliente_fields" class="hidden">
+                    <div id="profissional_fields" class="hidden">
                         <div class="label">
                             <label for="servico" class="label-text">Serviço oferecido</label>
                         </div>
@@ -82,6 +84,12 @@
                                 <option value="{{ servico.id }}">{{ servico.nome }}</option>
                             {% endfor %}
                         </select>
+
+                        <div class="label">
+                            <label for="descricao" class="label-text">Descrição</label>
+                        </div>
+                        <textarea name="descricao" id="descricao" class="textarea textarea-bordered w-full"
+                                  placeholder="Fale um pouco sobre você e os serviços que oferece. Que tipo de trabalho você faz? Como você pode ajudar as pessoas? Descreva sua experiência e habilidades com o seu ofício."></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary block">Cadastrar</button>
@@ -92,7 +100,7 @@
 
     <script>
         const radioButtons = document.querySelectorAll('input[name="tipo_usuario"]');
-        const clienteFields = document.getElementById('cliente_fields');
+        const clienteFields = document.getElementById('profissional_fields');
 
         radioButtons.forEach(radio => {
             radio.addEventListener('change', () => {
