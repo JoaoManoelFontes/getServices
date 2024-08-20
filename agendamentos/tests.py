@@ -14,7 +14,8 @@ class HorarioModelTest(TestCase):
     def setUp(self):
         self.user = BaseUser.objects.create_user(username="testuser", password="12345")
         servico = Servico.objects.create(
-            nome="Serviços gerais", descricao="Serviços gerais",
+            nome="Serviços gerais",
+            descricao="Serviços gerais",
         )
         self.profissional = Profissional.objects.create(user=self.user, servico=servico)
         self.horario = Horario.objects.create(

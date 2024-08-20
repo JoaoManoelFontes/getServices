@@ -4,7 +4,8 @@ from django.db import models
 
 class Avaliacao(models.Model):
     nota = models.IntegerField(
-        default=0, validators=[MinValueValidator(0), MaxValueValidator(5)],
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
     )
     comentario = models.TextField()
     cliente = models.ForeignKey("usuarios.Cliente", on_delete=models.CASCADE)

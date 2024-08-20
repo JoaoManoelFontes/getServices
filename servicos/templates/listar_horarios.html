@@ -1,0 +1,78 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <div class="w-full">
+        <div class="flex text-center justify-between mb-6">
+            <div class="flex items-center gap-1.5">
+                {% if view_type == 'detalhes' %}
+                    <a href="{% url 'horarios_resumo' %}" role="button"
+                       class="btn btn-circle btn-sm">
+                        {% include 'icons/chevron_left.html' %}
+                    </a>
+                {% endif %}
+                <h1 class="text-xl font-semibold tracking-tight">Horários</h1>
+            </div>
+            <a href="{% url 'cadastrar_horario' %}" role="button" class="btn btn-sm">Novo Horário</a>
+        </div>
+
+        {% if view_type == 'resumo' %}
+            <ul class="flex flex-col gap-4">
+                {% for resumo_mes in resumo_meses %}
+                    {% with ano=resumo_mes.month|date:"Y" mes=resumo_mes.month|date:"m" %}
+                        <li class="flex justify-between items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200">
+                            <a href="{% url 'horarios_detalhes' ano=ano mes=mes %}"
+                               class="text-lg font-medium text-blue-600 hover:text-blue-700">
+                                {{ resumo_mes.month|date:"F Y" }}
+                            </a>
+                            <span class="text-sm text-gray-600 ml-2">{{ resumo_mes.count }} horários</span>
+                        </li>
+                    {% endwith %}
+                {% endfor %}
+            </ul>
+
+        {% elif view_type == 'detalhes' %}
+            <div class="flex flex-col justify-center">
+            <ul class="divide-y divide-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for horario in horarios %}
+                    <li class="p-4 flex items-start justify-between card-bordered rounded-md">
+                        <div class="flex flex-col">
+                        <span class="text-gray-700 font-medium">
+                            {{ horario.data_inicio|date:"d/m/Y H:i" }}
+                        </span>
+                            <span class="text-gray-500 text-sm">
+                            Término: {{ horario.data_fim|date:"d/m/Y H:i" }}
+                        </span>
+                            <span class="mt-2 text-sm {% if horario.vago %}text-green-600{% else %}text-red-600{% endif %}">
+                            {% if horario.vago %}
+                                Vago
+                            {% else %}
+                                Ocupado
+                            {% endif %}
+                        </span>
+                        </div>
+                        <a href="#" class="btn btn-error btn-sm ml-4"
+                           onclick="confirmDelete('{{ horario.id }}', '{{ ano }}', '{{ mes }}'); return false;">
+                            Deletar
+                        </a>
+                    </li>
+                {% endfor %}
+            </div>
+        {% endif %}
+        </ul>
+        </div>
+    </div>
+
+    <input type="checkbox" id="confirm-delete-modal" class="modal-toggle"/>
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Você tem certeza?</h3>
+            <p class="py-4">Deseja realmente excluir este horário? Esta ação não pode ser desfeita.</p>
+            <div class="modal-action">
+                <a id="delete-confirm" href="#" class="btn btn-error">Excluir</a>
+                <label for="confirm-delete-modal" class="btn">Cancelar</label>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
