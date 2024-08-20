@@ -34,10 +34,10 @@ def cadastrar_horario(request: HttpRequest) -> HttpResponse:
 def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
     if ano and mes:  # Lista os horários por mês
         horarios = Horario.objects.filter(
-        data_inicio__year=ano,
-        data_inicio__month=mes,
-        profissional__user=request.user
-    ).order_by('data_inicio')
+            data_inicio__year=ano,
+            data_inicio__month=mes,
+            profissional__user=request.user
+        ).order_by('data_inicio')
         context = {
             'horarios': horarios,
             'ano': ano,
@@ -50,27 +50,26 @@ def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
             profissional__user=request.user
         ).annotate(
             month=TruncMonth('data_inicio')
-            ).values(
+        ).values(
             'month'
-            ).annotate(
+        ).annotate(
             count=Count('id')
-            ).order_by('month')
-        
+        ).order_by('month')
+
         context = {
             'resumo_meses': resumos_meses,
             'view_type': 'resumo',
         }
 
-
     return render(
         request,
         "listar_horarios.html",
         context=context,
-        )
+    )
 
 
 @profissional_required
-def deletar_horario(request: HttpRequest, pk: int, ano:int, mes:int) -> HttpResponse:
+def deletar_horario(request: HttpRequest, pk: int, ano: int, mes: int) -> HttpResponse:
     horario = get_object_or_404(Horario, pk=pk)
     horario.delete()
     return redirect("horarios_detalhes", ano=ano, mes=mes)
