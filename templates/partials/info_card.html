@@ -1,16 +1,28 @@
 <article class="flex flex-col p-4 bg-zinc-100 gap-4 rounded-md max-sm:gap-2">
-  <div class="w-full flex gap-2">
-      <img
-          class="rounded-xl"
-          src="https://fastly.picsum.photos/id/877/48/48.jpg?hmac=KtpJVsvoZd0hVmW6-JFMlkmXCqut3xK1fT8A9Ag7PbY"
-          alt="User profile image"
-          width="48"
-          height="48"
-      >
-      <div class="w-full flex flex-col">
-          <h3 class="text-xl">{{ name }}</h3>
-          {% include 'partials/stars.html' with immutable=True rating=rating %}
-      </div>
-  </div>
-  <p class="w-full">{{ text }}</p>
+    <div class="flex gap-2">
+        {% if profile %}
+            <img
+                    class="rounded-full aspect-square"
+                    src="{{ profile.url }}"
+                    alt="Imagem de perfil do usuário {{ name }}"
+                    width="48"
+                    height="48"
+            >
+        {% else %}
+            <div class="rounded-full aspect-square size-12 flex justify-center items-center bg-zinc-200">
+                <span class="font-semibold text-lg">
+                    {{ name|slice:"0:1"|upper }}
+                </span>
+            </div>
+        {% endif %}
+        <div class="w-full flex flex-col">
+            <h3 class="text-xl">{{ name }}</h3>
+            {% include 'partials/stars.html' with immutable=True rating=rating %}
+        </div>
+    </div>
+    <p>{{ text }}</p>
+
+    {% if slug %}
+        <a href="{% url 'pagina_perfil' slug=slug %}" class="link link-primary">Ver perfil</a>
+    {% endif %}
 </article>
