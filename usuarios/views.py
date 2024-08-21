@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as DjangoLoginView
-from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Count
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
@@ -25,35 +25,15 @@ class PerfilProfissionalView(View):
         profissional = get_object_or_404(Profissional, slug=slug)
         cliente = Cliente.objects.filter(user=request.user).first()
 
-        if cliente is None or profissional.user == request.user:
-            pode_avaliar = False
-        else:
-            agendamento = Agendamento.objects.filter(
-                cliente=cliente, profissional=profissional, status="Concluido"
-            ).first()
-
-            pode_avaliar = (
-                agendamento is not None
-                and not Avaliacao.objects.filter(
-                    agendamento=agendamento, cliente=cliente
-                ).exists()
-            )
-
-        avaliacoes = selectors.get_avaliacoes(profissional)
-
-        avaliacoes_notas = (
-            avaliacoes["avaliacoes"]
-            .values("nota")
-            .annotate(count=Count("id"))
-            .order_by("-nota")
+        pode_avaliar = self.usuario_pode_avaliar(
+            profissional, cliente, usuario_autenticado=request.user
         )
 
+        avaliacoes = self.get_avaliacoes_data(profissional)
+
         return {
-            "avaliacoes": avaliacoes["avaliacoes"],
-            "media_avaliacao": avaliacoes["media_avaliacao"],
             "pode_avaliar": pode_avaliar,
-            "avaliacoes_notas": avaliacoes_notas,
-            "total": len(avaliacoes["avaliacoes"]),
+            **avaliacoes,
         }
 
     def get(self, request, *args, **kwargs):
@@ -82,6 +62,43 @@ class PerfilProfissionalView(View):
 
         context["form"] = form
         return render(request, self.template_name, context)
+
+    def get_avaliacoes_data(self, profissional):
+        avaliacoes = selectors.get_avaliacoes(profissional)
+
+        avaliacoes_notas = (
+            avaliacoes["avaliacoes"]
+            .values("nota")
+            .annotate(count=Count("id"))
+            .order_by("-nota")
+        )
+
+        total_avaliacoes = len(avaliacoes["avaliacoes"])
+        media_avaliacao = avaliacoes["media_avaliacao"]
+
+        return {
+            "avaliacoes": avaliacoes["avaliacoes"],
+            "media_avaliacao": media_avaliacao,
+            "avaliacoes_notas": avaliacoes_notas,
+            "total_avaliacoes": total_avaliacoes,
+        }
+
+    def usuario_pode_avaliar(self, profissional, cliente, usuario_autenticado):
+        if cliente is None or profissional.user == usuario_autenticado:
+            return False
+
+        agendamento = Agendamento.objects.filter(
+            cliente=cliente, profissional=profissional, status="Concluido"
+        ).first()
+
+        pode_avaliar = (
+            agendamento is not None
+            and not Avaliacao.objects.filter(
+                agendamento=agendamento, cliente=cliente
+            ).exists()
+        )
+
+        return pode_avaliar
 
 
 class RegistrarView(CreateView):
