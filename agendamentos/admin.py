@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Horario
+from .models import Agendamento, Horario
 
 
 @admin.register(Horario)
@@ -14,3 +14,15 @@ class HorarioAdmin(admin.ModelAdmin):
         "data_fim_recorrencia",
     )
     ordering = ("-data_inicio",)
+
+
+@admin.register(Agendamento)
+class AgendamentoAdmin(admin.ModelAdmin):
+    list_display = (
+        "profissional",
+        "cliente",
+        "horario",
+        "status",
+        "created_at",
+    )
+    ordering = ("-created_at",)
