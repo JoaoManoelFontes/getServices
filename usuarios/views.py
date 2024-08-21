@@ -1,11 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Count
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView
+from django.views import View
+from django.views.generic import CreateView
 
+from agendamentos.models import Agendamento
 from avaliacoes import selectors
+from avaliacoes.forms import AvaliacaoForm
 from avaliacoes.models import Avaliacao
 from servicos.models import Servico
 
@@ -13,27 +17,71 @@ from .forms import LoginForm, RegistrarForm
 from .models import Cliente, Profissional
 
 
-class PerfilProfissionalView(DetailView):
+class PerfilProfissionalView(View):
     model = Profissional
     template_name = "perfil.html"
-    context_object_name = "profissional"
-    slug_url_kwarg = "slug"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        avaliacoes = selectors.get_avaliacoes(self.object)
+    def get_context_data(self, slug, request):
+        profissional = get_object_or_404(Profissional, slug=slug)
+        cliente = Cliente.objects.filter(user=request.user).first()
+
+        if cliente is None or profissional.user == request.user:
+            pode_avaliar = False
+        else:
+            agendamento = Agendamento.objects.filter(
+                cliente=cliente, profissional=profissional, status="Concluido"
+            ).first()
+
+            pode_avaliar = (
+                agendamento is not None
+                and not Avaliacao.objects.filter(
+                    agendamento=agendamento, cliente=cliente
+                ).exists()
+            )
+
+        avaliacoes = selectors.get_avaliacoes(profissional)
+
         avaliacoes_notas = (
-            Avaliacao.objects.filter(profissional=self.object)
+            avaliacoes["avaliacoes"]
             .values("nota")
             .annotate(count=Count("id"))
             .order_by("-nota")
         )
 
-        context["avaliacoes"] = avaliacoes["avaliacoes"]
-        context["media_avaliacao"] = avaliacoes["media_avaliacao"]
-        context["avaliacoes_notas"] = avaliacoes_notas
-        context["total"] = len(avaliacoes["avaliacoes"])
-        return context
+        return {
+            "avaliacoes": avaliacoes["avaliacoes"],
+            "media_avaliacao": avaliacoes["media_avaliacao"],
+            "pode_avaliar": pode_avaliar,
+            "avaliacoes_notas": avaliacoes_notas,
+            "total": len(avaliacoes["avaliacoes"]),
+        }
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(self.kwargs.get("slug"), request)
+        return render(request, self.template_name, context)
+
+    def post(self, request, slug):
+        profissional = get_object_or_404(Profissional, slug=slug)
+        cliente = Cliente.objects.get(user=request.user)
+
+        context = self.get_context_data(slug, request)
+
+        if request.POST.get("avaliacao_comentario") and context["pode_avaliar"]:
+            form = AvaliacaoForm(request.POST)
+            if form.is_valid():
+                avaliacao = form.save(commit=False)
+                avaliacao.cliente = cliente
+                avaliacao.profissional = profissional
+                avaliacao.agendamento = Agendamento.objects.filter(
+                    cliente=cliente, profissional=profissional, status="Concluido"
+                ).first()
+                avaliacao.save()
+                return redirect("pagina_perfil", slug=profissional.slug)
+        else:
+            form = AvaliacaoForm()
+
+        context["form"] = form
+        return render(request, self.template_name, context)
 
 
 class RegistrarView(CreateView):

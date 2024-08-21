@@ -25,9 +25,13 @@ class Agendamento(models.Model):
         choices=status_choices,
         default="Pendente",
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return f"{self.profissional.servico.nome} - {self.cliente.username}"
+        return f"{self.profissional.servico.nome} - {self.cliente}"
 
 
 class Horario(models.Model):
