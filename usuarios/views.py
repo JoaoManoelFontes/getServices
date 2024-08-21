@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView
 
 from avaliacoes import selectors
+from avaliacoes.models import Avaliacao
 from servicos.models import Servico
 
 from .forms import LoginForm, RegistrarForm
@@ -20,8 +22,17 @@ class PerfilProfissionalView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         avaliacoes = selectors.get_avaliacoes(self.object)
+        avaliacoes_notas = (
+            Avaliacao.objects.filter(profissional=self.object)
+            .values("nota")
+            .annotate(count=Count("id"))
+            .order_by("-nota")
+        )
+
         context["avaliacoes"] = avaliacoes["avaliacoes"]
         context["media_avaliacao"] = avaliacoes["media_avaliacao"]
+        context["avaliacoes_notas"] = avaliacoes_notas
+        context["total"] = len(avaliacoes["avaliacoes"])
         return context
 
 

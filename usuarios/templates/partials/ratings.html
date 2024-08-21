@@ -1,29 +1,19 @@
 <table class="bg-zinc-200 flex flex-col gap-2 p-4">
-  <thead>
-      <tr>
-          <th>211 Avaliações</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr class="flex gap-2 justify-center">
-          <td>{% include 'partials/stars.html' with immutable=True rating=5 %}</td>
-          <td>80</td>
-      </tr>
-      <tr class="flex gap-2 justify-center">
-          <td>{% include 'partials/stars.html' with immutable=True rating=4 %}</td>
-          <td>80</td>
-      </tr>
-      <tr class="flex gap-2 justify-center">
-          <td>{% include 'partials/stars.html' with immutable=True rating=3 %}</td>
-          <td>80</td>
-      </tr>
-      <tr class="flex gap-2 justify-center">
-          <td>{% include 'partials/stars.html' with immutable=True rating=2 %}</td>
-          <td>80</td>
-      </tr>
-      <tr class="flex gap-2 justify-center">
-          <td>{% include 'partials/stars.html' with immutable=True rating=1 %}</td>
-          <td>80</td>
-      </tr>
-  </tbody>
+    <thead>
+        <tr>
+            <th>{{ total }} Avaliaç{{ total|pluralize:"ão,ões" }}</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for nota in avaliacoes_notas %}
+
+
+        <tr class="flex gap-2 justify-center">
+            <td>{% include 'partials/stars.html' with immutable=True rating=nota.nota %}</td>
+            <td>{{ nota.count }}</td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
 </table>
