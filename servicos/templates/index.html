@@ -1,98 +1,86 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-<div class="relative max-lg:hidden">
-    <aside class="min-w-72 flex flex-col gap-4 sticky top-24 max-h-[calc(100vh-7rem)]">
-        <div class="flex flex-col gap-4">
-            <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
-                <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
-                    </li>
-                </ul>
-                <div class="flex w-full justify-center items-center text-sm pt-2">
-                    <span data-expandable-button
-                        class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-                </div>
-            </section>
-            <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
-                <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
-                    <li>
-                        {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00"
-                        end_time="14:15" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20"
-                        end_time="16:20" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/schedule_card.html' with date="09/12" start_time="07:45"
-                        end_time="9:30" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/schedule_card.html' with date="23/12" start_time="12:30"
-                        end_time="17:30" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00"
-                        end_time="14:15" %}
-                    </li>
-                    <li>
-                        {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20"
-                        end_time="16:20" %}
-                    </li>
-                </ul>
-                <div class="flex w-full justify-center items-center text-sm pt-2">
-                    <span data-expandable-button
-                        class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-                </div>
-            </section>
-            <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
-                <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
-
-                    {% for servico in servicos %}
-
-
-                    <li>
-                        {% include 'partials/services_card.html' with service="Construção Civil" %}
-                    </li>
-
-                    {% endfor %}
-
-                </ul>
-                <div class="flex w-full justify-center items-center text-sm pt-2">
-                    <span data-expandable-button
-                        class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-                </div>
-            </section>
-        </div>
-    </aside>
-</div>
-<main class="flex flex-col gap-4 grow">
-    {% for profissional in profissionais %}
-    {% include 'partials/info_card.html' with name=profissional.user.name rating=profissional.media_avaliacao
-    text=profissional.descricao profile=profissional.user.profile_image slug=profissional.slug %}
-    {% endfor %}
-</main>
+    <div class="relative max-lg:hidden">
+        <aside class="min-w-72 flex flex-col gap-4 sticky top-24 max-h-[calc(100vh-7rem)]">
+            <div class="flex flex-col gap-4">
+                <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
+                    <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
+                        </li>
+                    </ul>
+                    <div class="flex w-full justify-center items-center text-sm pt-2">
+                        <span data-expandable-button
+                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                    </div>
+                </section>
+                <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
+                    <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00" end_time="14:15" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20" end_time="16:20" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="09/12" start_time="07:45" end_time="09:30" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="23/12" start_time="12:30" end_time="17:30" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00" end_time="14:15" %}
+                        </li>
+                        <li>
+                            {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20" end_time="16:20" %}
+                        </li>
+                    </ul>
+                    <div class="flex w-full justify-center items-center text-sm pt-2">
+                        <span data-expandable-button
+                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                    </div>
+                </section>
+                <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
+                    <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                        {% for servico in servicos %}
+                            <li>
+                                {% include 'partials/services_card.html' %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="flex w-full justify-center items-center text-sm pt-2">
+                        <span data-expandable-button
+                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </div>
+    <main class="flex flex-col gap-4 grow">
+        {% for profissional in profissionais %}
+            {% include 'partials/info_card.html' with name=profissional.user.name rating=profissional.media_avaliacao text=profissional.descricao profile=profissional.user.profile_image slug=profissional.slug %}
+        {% endfor %}
+    </main>
 {% endblock %}
