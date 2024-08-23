@@ -7,8 +7,9 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
 
+from agendamentos import selectors as agendamentos_selectors
 from agendamentos.models import Agendamento
-from avaliacoes import selectors
+from avaliacoes import selectors as avaliacoes_selectors
 from avaliacoes.forms import AvaliacaoForm
 from avaliacoes.models import Avaliacao
 from servicos.models import Servico
@@ -30,10 +31,11 @@ class PerfilProfissionalView(View):
         )
 
         avaliacoes = self.get_avaliacoes_data(profissional)
-
+        horarios = agendamentos_selectors.get_horarios(profissional)
         return {
             "pode_avaliar": pode_avaliar,
             **avaliacoes,
+            "horarios": horarios,
         }
 
     def get(self, request, *args, **kwargs):
@@ -64,7 +66,7 @@ class PerfilProfissionalView(View):
         return render(request, self.template_name, context)
 
     def get_avaliacoes_data(self, profissional):
-        avaliacoes = selectors.get_avaliacoes(profissional)
+        avaliacoes = avaliacoes_selectors.get_avaliacoes(profissional)
 
         avaliacoes_notas = (
             avaliacoes["avaliacoes"]
