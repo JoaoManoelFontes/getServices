@@ -1,6 +1,5 @@
 {% extends 'layout/base.html' %}
 {% load static %}
-{% load static %}
 
 {% block title %}
     {{ profissional.user.username }} - {{ profissional.servico.nome }}
@@ -70,7 +69,37 @@
                                 &plus;
                             </button>
                         </div>
+                        <div class="flex justify-between mb-4">
+                            <span class="text-white text-xl">Agendamentos</span>
+                            <button onclick="criarAgendamentoModal.showModal()" class="btn btn-circle btn-sm">
+                                &plus;
+                            </button>
+                        </div>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                            {% for agendamento in agendamentos %}
+                                <li data-appointment-container>
+                                    <span>
+                                        {{ agendamento.horario.data_inicio }}
+                                    </span>
+                                    {% if agendamento.status == "Pendente" and agendamento.profissional.user == user %}
+                                        <form action="{% url 'responder_agendamento' agendamento.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input class="hidden" data-approve-input type="radio" name="status"
+                                                   id="id_status" value="Concluido">
+                                            <input class="hidden" data-cancel-input type="radio" name="status"
+                                                   id="id_status" value="Cancelado">
+                                            <span class="cursor-pointer" data-approve-appointment>
+                                                <span class="text-xl">&check;</span>
+                                                Aceitar
+                                            </span>
+                                            <span class="cursor-pointer" data-cancel-appointment>
+                                                <span class="text-xl">&times;</span>
+                                                Negar
+                                            </span>
+                                        </form>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
                             {% for agendamento in agendamentos %}
                                 <li data-appointment-container>
                                     <span>
@@ -147,6 +176,7 @@
             </section>
         </div>
     </main>
+    {% include 'partials/modal.html' %}
     {% include 'partials/modal.html' %}
 {% endblock %}
 
