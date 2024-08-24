@@ -1,6 +1,6 @@
 from django import forms
 
-from agendamentos.models import Horario, Agendamento
+from agendamentos.models import Agendamento, Horario
 
 
 class HorarioForm(forms.ModelForm):
@@ -80,12 +80,14 @@ class HorarioForm(forms.ModelForm):
 
         return instance
 
+
 class AgendamentoForm(forms.ModelForm):
     class Meta:
         model = Agendamento
-        fields = ('profissional', 'cliente', 'horario')
+        fields = ("profissional", "cliente", "horario")
+
 
 class ResponderAgendamentoForm(forms.ModelForm):
     class Meta:
         model = Agendamento
-        fields = ('status',)
+        fields = ("status",)

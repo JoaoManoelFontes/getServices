@@ -6,8 +6,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from servicos.decorators import profissional_required
 from usuarios.models import Profissional
 
-from .forms import HorarioForm, AgendamentoForm, ResponderAgendamentoForm
-from .models import Horario, Agendamento
+from .forms import AgendamentoForm, HorarioForm, ResponderAgendamentoForm
+from .models import Agendamento, Horario
 
 
 @profissional_required
@@ -86,10 +86,11 @@ def cadastrar_agendamento(request: HttpRequest, slug: str) -> HttpResponse:
 
     return redirect("pagina_perfil", slug)
 
+
 def responder_agendamento(request: HttpRequest, id: int) -> HttpResponse:
     agendamento = Agendamento.objects.get(id=id)
     profissional = Profissional.objects.get(id=agendamento.profissional.id)
-    
+
     if request.method == "POST":
         form = ResponderAgendamentoForm(request.POST, instance=agendamento)
         if form.is_valid():
