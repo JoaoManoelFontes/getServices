@@ -69,12 +69,6 @@
                                 &plus;
                             </button>
                         </div>
-                        <div class="flex justify-between mb-4">
-                            <span class="text-white text-xl">Agendamentos</span>
-                            <button onclick="criarAgendamentoModal.showModal()" class="btn btn-circle btn-sm">
-                                &plus;
-                            </button>
-                        </div>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
                             {% for agendamento in agendamentos %}
                                 <li data-appointment-container>
@@ -176,7 +170,6 @@
             </section>
         </div>
     </main>
-    {% include 'partials/modal.html' %}
     {% include 'partials/modal.html' %}
 {% endblock %}
 
