@@ -6,8 +6,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from servicos.decorators import profissional_required
 from usuarios.models import Profissional
 
-from .forms import HorarioForm, AgendamentoForm, ResponderAgendamentoForm
-from .models import Horario, Agendamento
+from .forms import AgendamentoForm, HorarioForm, ResponderAgendamentoForm
+from .models import Agendamento, Horario
 
 
 @profissional_required

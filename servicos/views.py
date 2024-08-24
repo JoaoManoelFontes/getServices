@@ -22,7 +22,7 @@ def pagina_inicial(request: HttpRequest) -> HttpResponse:
         "index.html",
         {
             "profissionais": profissionais,
-            "servicos": servicos,
             "agendamentos": agendamentos,
+            "servicos": servicos,
         },
     )
