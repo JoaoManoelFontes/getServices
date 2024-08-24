@@ -23,7 +23,7 @@ class PerfilProfissionalView(View):
     template_name = "perfil.html"
 
     def get_context_data(self, slug, request):
-        profissional = get_object_or_404(Profissional, slug=slug)
+        profissional = Profissional.objects.select_related('user').get(slug=slug)
         cliente = Cliente.objects.filter(user=request.user).first()
 
         pode_avaliar = self.usuario_pode_avaliar(
