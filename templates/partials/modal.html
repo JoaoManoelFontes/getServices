@@ -1,26 +1,35 @@
-<div data-modal-background class="bg-zinc-800 fixed inset-0 opacity-75 z-10 hidden"></div>
-<div data-modal class="bg-white fixed w-96 z-20 top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 flex flex-col justify-start items-center p-4 box-content rounded-md gap-4 hidden">
-  <span data-modal-close class="text-[1.5rem] w-4 h-4 leading-4 text-zinc-400 absolute top-4 right-4 cursor-pointer">
-    &times;
-  </span>
-  <h2 class="font-bold text-2xl text-center">Criar Agendamento</h2>
-  <form class="flex flex-col gap-4" action="{% url 'cadastrar_agendamento' profissional.slug %}" method="post">
-    {% if has_horario_livre %}
-      {{ form.errors }}
-      {% csrf_token %}
-      <p class="text-center">Selecione um horário para realizar um agendamento</p>
-      <input type="hidden" name="profissional" id="id_profissional" value="{{ profissional.id }}">
-      <input type="hidden" name="cliente" id="id_cliente" value="{{ user.cliente.id }}">
-      <select class="p-2" name="horario" id="id_horario">
-        {% for horario in horarios %}
-          {% if horario.vago %}
-            <option value="{{ horario.id }}">{{ horario }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-      <button class="bg-blue-500 text-white p-2" type="submit">Propor Agendamento</button>
-    {% else %}
-      <span class="text-center max-w-sm m-auto">Não há horário disponíveis no momento. Tente novamente mais tarde.</span>
-    {% endif %}
-  </form>
-</div>
+<dialog id="criarAgendamentoModal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Faça seu agendamento</h3>
+
+        {% if has_horario_livre %}
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <input type="hidden" name="profissional" id="id_profissional" value="{{ profissional.id }}">
+                <input type="hidden" name="cliente" id="id_cliente" value="{{ user.cliente.id }}">
+
+                <div class="form-control">
+                    <div class="label">
+                        <span class="label-text">Selecione um horário</span>
+                    </div>
+
+                    <select class="select select-bordered w-full" name="horario" id="id_horario">
+                        {% for horario in horarios %}
+                            {% if horario.vago %}
+                                <option value="{{ horario.id }}">{{ horario }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <input class="btn btn-primary btn-sm" type="submit" name="criar_agendamento"/>
+            </form>
+        {% else %}
+            <span>Não há horário disponíveis no momento. Tente novamente mais tarde.</span>
+        {% endif %}
+
+        <form method="dialog" class="flex justify-end">
+            <button class="btn btn-sm">Cancelar</button>
+        </form>
+    </div>
+</dialog>

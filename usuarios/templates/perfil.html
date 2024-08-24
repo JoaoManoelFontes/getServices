@@ -6,7 +6,6 @@
 {% endblock title %}
 
 {% block head %}
-    <script src="{% static 'js/modal.js' %}" defer></script>
     <script src="{% static 'js/appointments.js' %}" defer></script>
 {% endblock %}
 
@@ -66,7 +65,9 @@
                     <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
                         <div class="flex justify-between mb-4">
                             <span class="text-white text-xl">Agendamentos</span>
-                            <span data-open-modal class="text-white font-bold text-xl cursor-pointer">&plus;</span>
+                            <button onclick="criarAgendamentoModal.showModal()" class="btn btn-circle btn-sm">
+                                &plus;
+                            </button>
                         </div>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
                             {% for agendamento in agendamentos %}
@@ -77,8 +78,10 @@
                                     {% if agendamento.status == "Pendente" and agendamento.profissional.user == user %}
                                         <form action="{% url 'responder_agendamento' agendamento.id %}" method="post">
                                             {% csrf_token %}
-                                            <input class="hidden" data-approve-input type="radio" name="status" id="id_status" value="Concluido">
-                                            <input class="hidden" data-cancel-input type="radio" name="status" id="id_status" value="Cancelado">
+                                            <input class="hidden" data-approve-input type="radio" name="status"
+                                                   id="id_status" value="Concluido">
+                                            <input class="hidden" data-cancel-input type="radio" name="status"
+                                                   id="id_status" value="Cancelado">
                                             <span class="cursor-pointer" data-approve-appointment>
                                                 <span class="text-xl">&check;</span>
                                                 Aceitar
