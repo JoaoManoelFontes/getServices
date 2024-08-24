@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from servicos.decorators import profissional_required
 from usuarios.models import Profissional
 
-from .forms import AgendamentoForm, HorarioForm, ResponderAgendamentoForm
+from .forms import HorarioForm, ResponderAgendamentoForm
 from .models import Agendamento, Horario
 
 
@@ -71,20 +71,6 @@ def deletar_horario(request: HttpRequest, pk: int, ano: int, mes: int) -> HttpRe
     horario = get_object_or_404(Horario, pk=pk)
     horario.delete()
     return redirect("horarios_detalhes", ano=ano, mes=mes)
-
-
-def cadastrar_agendamento(request: HttpRequest, slug: str) -> HttpResponse:
-    if request.method == "POST":
-        form = AgendamentoForm(request.POST)
-        if form.is_valid():
-            form.instance.horario.vago = False
-            form.instance.horario.save()
-            form.save()
-            return redirect("pagina_inicial")
-    else:
-        form = AgendamentoForm()
-
-    return redirect("pagina_perfil", slug)
 
 
 def responder_agendamento(request: HttpRequest, id: int) -> HttpResponse:
