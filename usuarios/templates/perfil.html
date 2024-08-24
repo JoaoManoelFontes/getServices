@@ -47,7 +47,7 @@
                         </ul>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
                             {% for horario in horarios %}
-                                <li {% if not horario.vago %} class="cursor-not-allowed opacity-50" {% endif %}>
+                                <li {% if not horario.vago %} class="cursor-not-allowed opacity-50 select-none" {% endif %}>
                                     {% include 'agendamentos/partials/schedule_card.html' with date=horario.data_inicio|date:"d/m" start_time=horario.data_inicio|date:"H:i" end_time=horario.data_fim|date:"H:i" %}
                                 </li>
                             {% endfor %}
