@@ -32,8 +32,15 @@ class PerfilProfissionalView(View):
 
         avaliacoes = self.get_avaliacoes_data(profissional)
         horarios = agendamentos_selectors.get_horarios(profissional)
+        agendamentos = Agendamento.objects.filter(profissional__slug=slug)
+        has_horario_livre = horarios.filter(vago=True).exists()
+
         return {
             "pode_avaliar": pode_avaliar,
+            "horarios": horarios,
+            "agendamentos": agendamentos,
+            "profissional": profissional,
+            "has_horario_livre": has_horario_livre,
             **avaliacoes,
             "horarios": horarios,
         }
