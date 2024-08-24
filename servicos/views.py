@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from usuarios.models import Profissional
+from agendamentos.models import Agendamento
 
 
 def pagina_inicial(request: HttpRequest) -> HttpResponse:
@@ -12,8 +13,10 @@ def pagina_inicial(request: HttpRequest) -> HttpResponse:
         .annotate(media_avaliacao=Avg("avaliacao__nota"))
     )
 
+    agendamentos = Agendamento.objects.filter(cliente__user=request.user)
+
     return render(
         request,
         "index.html",
-        {"profissionais": profissionais},
+        {"profissionais": profissionais, "agendamentos": agendamentos},
     )

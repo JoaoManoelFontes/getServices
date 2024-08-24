@@ -6,29 +6,15 @@
             <div class="flex flex-col gap-4">
                 <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
                     <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                        {% for agendamento in agendamentos %}
+                            <li>
+                                <span>
+                                    {{ agendamento.horario.data_inicio }}
+                                </span>
+                            </li>
+                        {% endfor %}
                         <li>
                             {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-                        </li>
-                        <li>
-                            {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-                        </li>
-                        <li>
-                            {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-                        </li>
-                        <li>
-                            {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
-                        </li>
-                        <li>
-                            {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-                        </li>
-                        <li>
-                            {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-                        </li>
-                        <li>
-                            {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-                        </li>
-                        <li>
-                            {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
                         </li>
                     </ul>
                     <div class="flex w-full justify-center items-center text-sm pt-2">

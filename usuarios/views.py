@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
 
-from agendamentos.models import Agendamento
+from agendamentos.models import Agendamento, Horario
 from avaliacoes import selectors
 from avaliacoes.forms import AvaliacaoForm
 from avaliacoes.models import Avaliacao
@@ -30,9 +30,17 @@ class PerfilProfissionalView(View):
         )
 
         avaliacoes = self.get_avaliacoes_data(profissional)
+        horarios = Horario.objects.filter(profissional__slug=slug)
+        agendamentos = Agendamento.objects.filter(profissional__slug=slug)
+
+        ha_horario_livre = horarios.filter(vago=True).exists()
 
         return {
             "pode_avaliar": pode_avaliar,
+            "horarios": horarios,
+            "agendamentos": agendamentos,
+            "profissional": profissional,
+            "has_horario_livre": ha_horario_livre,
             **avaliacoes,
         }
 

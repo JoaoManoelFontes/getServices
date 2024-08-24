@@ -1,8 +1,14 @@
 {% extends 'layout/base.html' %}
+{% load static %}
 
 {% block title %}
     {{ profissional.user.username }} - {{ profissional.servico.nome }}
 {% endblock title %}
+
+{% block head %}
+    <script src="{% static 'js/modal.js' %}" defer></script>
+    <script src="{% static 'js/appointments.js' %}" defer></script>
+{% endblock %}
 
 {% block content %}
     <div class="bg-[url('https://www.simplilearn.com/ice9/free_resources_article_thumb/IsGraphic_DesignAGoodCareerb.jpg')] bg-center h-80 w-full absolute top-20 left-0 bg-no-repeat bg-cover -z-10"></div>
@@ -46,23 +52,13 @@
                             </li>
                         </ul>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                            {% for horario in horarios %}
+                                <li>
+                                    {{ horario.data_inicio }}
+                                </li>
+                            {% endfor %}
                             <li>
                                 {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00" end_time="14:15" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20" end_time="16:20" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/schedule_card.html' with date="09/12" start_time="07:45" end_time="9:30" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/schedule_card.html' with date="23/12" start_time="12:30" end_time="17:30" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00" end_time="14:15" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20" end_time="16:20" %}
                             </li>
                         </ul>
                         <div class="flex w-full justify-center items-center text-sm pt-2">
@@ -71,30 +67,35 @@
                         </div>
                     </section>
                     <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
+                        <div class="flex justify-between mb-4">
+                            <span class="text-white text-xl">Agendamentos</span>
+                            <span data-open-modal class="text-white font-bold text-xl cursor-pointer">&plus;</span>
+                        </div>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                            {% for agendamento in agendamentos %}
+                                <li data-appointment-container>
+                                    <span>
+                                        {{ agendamento.horario.data_inicio }}
+                                    </span>
+                                    {% if agendamento.status == "Pendente" and agendamento.profissional.user == user %}
+                                        <form action="{% url 'responder_agendamento' agendamento.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input class="hidden" data-approve-input type="radio" name="status" id="id_status" value="Concluido">
+                                            <input class="hidden" data-cancel-input type="radio" name="status" id="id_status" value="Cancelado">
+                                            <span class="cursor-pointer" data-approve-appointment>
+                                                <span class="text-xl">&check;</span>
+                                                Aceitar
+                                            </span>
+                                            <span class="cursor-pointer" data-cancel-appointment>
+                                                <span class="text-xl">&times;</span>
+                                                Negar
+                                            </span>
+                                        </form>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
                             <li>
                                 {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-                            </li>
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
                             </li>
                         </ul>
                         <div class="flex w-full justify-center items-center text-sm pt-2">
@@ -145,6 +146,7 @@
             </section>
         </div>
     </main>
+    {% include 'partials/modal.html' %}
 {% endblock %}
 
 
