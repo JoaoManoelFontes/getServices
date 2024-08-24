@@ -1,7 +1,7 @@
 from django.db.models import Avg
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-
+from servicos.models import Servico
 from usuarios.models import Profissional
 from agendamentos.models import Agendamento
 
@@ -14,9 +14,10 @@ def pagina_inicial(request: HttpRequest) -> HttpResponse:
     )
 
     agendamentos = Agendamento.objects.filter(cliente__user=request.user)
+    servicos = Servico.objects.all()
 
     return render(
         request,
         "index.html",
-        {"profissionais": profissionais, "agendamentos": agendamentos},
+        {"profissionais": profissionais, "agendamentos": agendamentos, "servicos": servicos},
     )
