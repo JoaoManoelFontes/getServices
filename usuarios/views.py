@@ -7,8 +7,6 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
 
-from agendamentos.models import Agendamento, Horario
-from avaliacoes import selectors
 from agendamentos import selectors as agendamentos_selectors
 from agendamentos.models import Agendamento
 from avaliacoes import selectors as avaliacoes_selectors
@@ -36,7 +34,11 @@ class PerfilProfissionalView(View):
         horarios = agendamentos_selectors.get_horarios(profissional)
         agendamentos = Agendamento.objects.filter(profissional__slug=slug)
 
-        ha_horario_livre = horarios.filter(vago=True).exists()
+        ha_horario_livre = False
+        for horario in horarios:
+            if horario.vago:
+                ha_horario_livre = True
+                break
 
         return {
             "pode_avaliar": pode_avaliar,

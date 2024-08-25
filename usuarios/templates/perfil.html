@@ -66,25 +66,25 @@
                     <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
                         <div class="flex justify-between mb-4">
                             <span class="text-white text-xl">Agendamentos</span>
-                            <span data-open-modal class="text-white font-bold text-xl cursor-pointer">&plus;</span>
+                            {% if user != profissional.user %}
+                                <span data-open-modal class="text-white font-bold text-xl cursor-pointer">&plus;</span>
+                            {% endif %}
                         </div>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
                             {% for agendamento in agendamentos %}
                                 <li data-appointment-container>
-                                    <span>
-                                        {{ agendamento.horario.data_inicio }}
+                                    <span class="relative z-10">
+                                        {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" start_time=agendamento.horario.data_inicio|date:"H:i" end_time=agendamento.horario.data_fim|date:"H:i" %}
                                     </span>
                                     {% if agendamento.status == "Pendente" and agendamento.profissional.user == user %}
-                                        <form action="{% url 'responder_agendamento' agendamento.id %}" method="post">
+                                        <form class="bg-blue-400 rounded-b-md h-8 relative -top-1 flex justify-start items-center gap-2 px-4" action="{% url 'responder_agendamento' agendamento.id %}" method="post">
                                             {% csrf_token %}
                                             <input class="hidden" data-approve-input type="radio" name="status" id="id_status" value="Concluido">
                                             <input class="hidden" data-cancel-input type="radio" name="status" id="id_status" value="Cancelado">
-                                            <span class="cursor-pointer" data-approve-appointment>
-                                                <span class="text-xl">&check;</span>
+                                            <span class="cursor-pointer flex items-center gap-0.5 text-blue-800" data-approve-appointment>
                                                 Aceitar
                                             </span>
-                                            <span class="cursor-pointer" data-cancel-appointment>
-                                                <span class="text-xl">&times;</span>
+                                            <span class="cursor-pointer flex items-center gap-0.5 text-blue-800" data-cancel-appointment>
                                                 Negar
                                             </span>
                                         </form>
@@ -92,7 +92,7 @@
                                 </li>
                             {% endfor %}
                             <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
+                                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" start_time="13:00" end_time="13:30" %}
                             </li>
                         </ul>
                         <div class="flex w-full justify-center items-center text-sm pt-2">

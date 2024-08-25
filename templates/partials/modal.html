@@ -5,7 +5,7 @@
   </span>
   <h2 class="font-bold text-2xl text-center">Criar Agendamento</h2>
   <form class="flex flex-col gap-4" action="{% url 'cadastrar_agendamento' profissional.slug %}" method="post">
-    {% if has_horario_livre %}
+    {% if ha_horario_livre %}
       {{ form.errors }}
       {% csrf_token %}
       <p class="text-center">Selecione um horário para realizar um agendamento</p>
@@ -14,7 +14,7 @@
       <select class="p-2" name="horario" id="id_horario">
         {% for horario in horarios %}
           {% if horario.vago %}
-            <option value="{{ horario.id }}">{{ horario }}</option>
+            <option value="{{ horario.id }}">{{ horario.data_inicio|date:"d/m" }} / {{ horario.data_inicio|date:"H:i" }} - {{ horario.data_fim|date:"H:i" }}</option>
           {% endif %}
         {% endfor %}
       </select>
