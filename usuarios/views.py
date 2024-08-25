@@ -29,7 +29,7 @@ class PerfilProfissionalView(View):
         pode_avaliar = self.usuario_pode_avaliar(
             profissional, cliente, usuario_autenticado=request.user
         )
-        print(profissional.servico.nome)
+
         avaliacoes = self.get_avaliacoes_data(profissional)
         schedule_data = agendamentos_selectors.get_profissional_schedule(profissional)
 
