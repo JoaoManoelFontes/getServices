@@ -25,26 +25,31 @@ class PerfilProfissionalView(View):
 
     def get_context_data(self, slug, request):
         profissional = Profissional.objects.select_related("user").get(slug=slug)
-        cliente = Cliente.objects.filter(user=request.user).first()
 
-        pode_avaliar = self.usuario_pode_avaliar(
-            profissional, cliente, usuario_autenticado=request.user
-        )
+        pode_avaliar = self.usuario_pode_avaliar(profissional, usuario=request.user)
 
         avaliacoes = self.get_avaliacoes_data(profissional)
-        horarios = agendamentos_selectors.get_horarios(profissional)
-        agendamentos = Agendamento.objects.select_related("horario").filter(
-            profissional__slug=slug
-        )
-        ha_horario_livre = horarios.filter(vago=True).exists()
-        primeiros_25_horarios = horarios[:25]
+        schedule_data = agendamentos_selectors.get_profissional_schedule(profissional)
+
+        horarios = schedule_data["horarios"]
+
+        ha_horario_livre = False
+        for horario in horarios:
+            if horario.vago:
+                ha_horario_livre = True
+                break
+
+        # TODO: adicionar listagem de agendamentos no template do perfil
+        agendamentos = schedule_data["agendamentos"]
 
         return {
+            "profissional": profissional,
             "pode_avaliar": pode_avaliar,
-            "horarios": primeiros_25_horarios,
             "agendamentos": agendamentos,
             "profissional": profissional,
             "ha_horario_livre": ha_horario_livre,
+            "agendamentos": agendamentos,
+            "horarios": horarios,
             **avaliacoes,
         }
 
@@ -101,8 +106,13 @@ class PerfilProfissionalView(View):
             "total_avaliacoes": total_avaliacoes,
         }
 
-    def usuario_pode_avaliar(self, profissional, cliente, usuario_autenticado):
-        if cliente is None or profissional.user == usuario_autenticado:
+    def usuario_pode_avaliar(self, profissional, usuario):
+        if usuario.is_anonymous:
+            return False
+
+        cliente = Cliente.objects.filter(user=usuario).first()
+
+        if cliente is None or profissional.user == usuario:
             return False
 
         agendamento = Agendamento.objects.filter(
