@@ -9,6 +9,9 @@ from django.views.generic import CreateView
 
 from agendamentos.models import Agendamento, Horario
 from avaliacoes import selectors
+from agendamentos import selectors as agendamentos_selectors
+from agendamentos.models import Agendamento
+from avaliacoes import selectors as avaliacoes_selectors
 from avaliacoes.forms import AvaliacaoForm
 from avaliacoes.models import Avaliacao
 from servicos.models import Servico
@@ -22,7 +25,7 @@ class PerfilProfissionalView(View):
     template_name = "perfil.html"
 
     def get_context_data(self, slug, request):
-        profissional = get_object_or_404(Profissional, slug=slug)
+        profissional = Profissional.objects.select_related("user").get(slug=slug)
         cliente = Cliente.objects.filter(user=request.user).first()
 
         pode_avaliar = self.usuario_pode_avaliar(
@@ -30,7 +33,7 @@ class PerfilProfissionalView(View):
         )
 
         avaliacoes = self.get_avaliacoes_data(profissional)
-        horarios = Horario.objects.filter(profissional__slug=slug)
+        horarios = agendamentos_selectors.get_horarios(profissional)
         agendamentos = Agendamento.objects.filter(profissional__slug=slug)
 
         ha_horario_livre = horarios.filter(vago=True).exists()
@@ -40,7 +43,7 @@ class PerfilProfissionalView(View):
             "horarios": horarios,
             "agendamentos": agendamentos,
             "profissional": profissional,
-            "has_horario_livre": ha_horario_livre,
+            "ha_horario_livre": ha_horario_livre,
             **avaliacoes,
         }
 
@@ -72,7 +75,7 @@ class PerfilProfissionalView(View):
         return render(request, self.template_name, context)
 
     def get_avaliacoes_data(self, profissional):
-        avaliacoes = selectors.get_avaliacoes(profissional)
+        avaliacoes = avaliacoes_selectors.get_avaliacoes(profissional)
 
         avaliacoes_notas = (
             avaliacoes["avaliacoes"]
