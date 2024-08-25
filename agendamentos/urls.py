@@ -4,11 +4,6 @@ from . import views
 
 urlpatterns = [
     path(
-        "agendamento/cadastro/<slug:slug>",
-        views.cadastrar_agendamento,
-        name="cadastrar_agendamento",
-    ),
-    path(
         "agendamento/responder/<int:id>",
         views.responder_agendamento,
         name="responder_agendamento",

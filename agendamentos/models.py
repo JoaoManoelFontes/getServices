@@ -59,7 +59,7 @@ class Horario(models.Model):
     data_fim_recorrencia = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return f"{self.profissional.user} - {self.data_inicio}"
+        return f"{self.data_inicio}"
 
     def gerar_horarios_recorrentes(self):
         if self.frequencia == "UNICA":

@@ -8,6 +8,7 @@ from django.views import View
 from django.views.generic import CreateView
 
 from agendamentos import selectors as agendamentos_selectors
+from agendamentos.forms import AgendamentoForm
 from agendamentos.models import Agendamento
 from avaliacoes import selectors as avaliacoes_selectors
 from avaliacoes.forms import AvaliacaoForm
@@ -32,17 +33,15 @@ class PerfilProfissionalView(View):
 
         avaliacoes = self.get_avaliacoes_data(profissional)
         horarios = agendamentos_selectors.get_horarios(profissional)
-        agendamentos = Agendamento.objects.filter(profissional__slug=slug)
-
-        ha_horario_livre = False
-        for horario in horarios:
-            if horario.vago:
-                ha_horario_livre = True
-                break
+        agendamentos = Agendamento.objects.select_related("horario").filter(
+            profissional__slug=slug
+        )
+        ha_horario_livre = horarios.filter(vago=True).exists()
+        primeiros_25_horarios = horarios[:25]
 
         return {
             "pode_avaliar": pode_avaliar,
-            "horarios": horarios,
+            "horarios": primeiros_25_horarios,
             "agendamentos": agendamentos,
             "profissional": profissional,
             "ha_horario_livre": ha_horario_livre,
@@ -56,11 +55,11 @@ class PerfilProfissionalView(View):
     def post(self, request, slug):
         profissional = get_object_or_404(Profissional, slug=slug)
         cliente = Cliente.objects.get(user=request.user)
-
         context = self.get_context_data(slug, request)
 
         if request.POST.get("avaliacao_comentario") and context["pode_avaliar"]:
             form = AvaliacaoForm(request.POST)
+
             if form.is_valid():
                 avaliacao = form.save(commit=False)
                 avaliacao.cliente = cliente
@@ -70,10 +69,16 @@ class PerfilProfissionalView(View):
                 ).first()
                 avaliacao.save()
                 return redirect("pagina_perfil", slug=profissional.slug)
-        else:
-            form = AvaliacaoForm()
 
-        context["form"] = form
+        if request.POST.get("criar_agendamento"):
+            form = AgendamentoForm(request.POST)
+
+            if form.is_valid():
+                form.instance.horario.vago = False
+                form.instance.horario.save()
+                form.save()
+                return redirect("pagina_inicial")
+
         return render(request, self.template_name, context)
 
     def get_avaliacoes_data(self, profissional):

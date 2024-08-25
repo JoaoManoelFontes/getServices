@@ -6,7 +6,6 @@
 {% endblock title %}
 
 {% block head %}
-    <script src="{% static 'js/modal.js' %}" defer></script>
     <script src="{% static 'js/appointments.js' %}" defer></script>
 {% endblock %}
 
@@ -67,7 +66,9 @@
                         <div class="flex justify-between mb-4">
                             <span class="text-white text-xl">Agendamentos</span>
                             {% if user != profissional.user %}
-                                <span data-open-modal class="text-white font-bold text-xl cursor-pointer">&plus;</span>
+                                <button onclick="criarAgendamentoModal.showModal()" class="btn btn-circle btn-sm">
+                                    &plus;
+                                </button>
                             {% endif %}
                         </div>
                         <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
@@ -79,12 +80,14 @@
                                     {% if agendamento.status == "Pendente" and agendamento.profissional.user == user %}
                                         <form class="bg-blue-400 rounded-b-md h-8 relative -top-1 flex justify-start items-center gap-2 px-4" action="{% url 'responder_agendamento' agendamento.id %}" method="post">
                                             {% csrf_token %}
-                                            <input class="hidden" data-approve-input type="radio" name="status" id="id_status" value="Concluido">
-                                            <input class="hidden" data-cancel-input type="radio" name="status" id="id_status" value="Cancelado">
-                                            <span class="cursor-pointer flex items-center gap-0.5 text-blue-800" data-approve-appointment>
+                                            <input class="hidden" data-approve-input type="radio" name="status"
+                                                   id="id_status" value="Concluido">
+                                            <input class="hidden" data-cancel-input type="radio" name="status"
+                                                   id="id_status" value="Cancelado">
+                                            <span class="cursor-pointer text-blue-800" data-approve-appointment>
                                                 Aceitar
                                             </span>
-                                            <span class="cursor-pointer flex items-center gap-0.5 text-blue-800" data-cancel-appointment>
+                                            <span class="cursor-pointer text-blue-800" data-cancel-appointment>
                                                 Negar
                                             </span>
                                         </form>
