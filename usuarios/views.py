@@ -31,10 +31,18 @@ class PerfilProfissionalView(View):
         )
 
         avaliacoes = self.get_avaliacoes_data(profissional)
-        horarios = agendamentos_selectors.get_horarios(profissional)
+        schedule_data = agendamentos_selectors.get_profissional_schedule(profissional)
+
+        horarios = schedule_data["horarios"]
+
+        # TODO: adicionar listagem de agendamentos no template do perfil
+        agendamentos = schedule_data["agendamentos"]
+
         return {
+            "profissional": profissional,
             "pode_avaliar": pode_avaliar,
             **avaliacoes,
+            "agendamentos": agendamentos,
             "horarios": horarios,
         }
 
