@@ -43,7 +43,9 @@ class PaginaInicialView(ListView):
 
         if profissional_autenticado:
             context["is_profissional_autenticado"] = True
-            schedule_data = selectors.get_profissional_schedule(profissional_autenticado)
+            schedule_data = selectors.get_profissional_schedule(
+                profissional_autenticado
+            )
             context["horarios"] = schedule_data["horarios"]
             context["agendamentos"] = schedule_data["agendamentos"]
 
