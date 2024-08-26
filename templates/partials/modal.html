@@ -1,0 +1,35 @@
+<dialog id="criarAgendamentoModal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Faça seu agendamento</h3>
+
+        {% if ha_horario_livre %}
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <input type="hidden" name="profissional" id="id_profissional" value="{{ profissional.id }}">
+                <input type="hidden" name="cliente" id="id_cliente" value="{{ user.cliente.id }}">
+
+                <div class="form-control">
+                    <div class="label">
+                        <span class="label-text">Selecione um horário</span>
+                    </div>
+
+                    <select class="select select-bordered w-full" name="horario" id="id_horario">
+                        {% for horario in horarios %}
+                            {% if horario.vago %}
+                              <option value="{{ horario.id }}">{{ horario.data_inicio|date:"d/m" }} / {{ horario.data_inicio|date:"H:i" }} - {{ horario.data_fim|date:"H:i" }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <input class="btn btn-primary btn-sm" type="submit" name="criar_agendamento"/>
+            </form>
+        {% else %}
+            <span>Não há horário disponíveis no momento. Tente novamente mais tarde.</span>
+        {% endif %}
+
+        <form method="dialog" class="flex justify-end">
+            <button class="btn btn-sm">Cancelar</button>
+        </form>
+    </div>
+</dialog>
