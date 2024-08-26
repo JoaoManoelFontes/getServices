@@ -1,0 +1,19 @@
+<table class="bg-zinc-200 flex flex-col gap-2 p-4">
+    <thead>
+        <tr>
+            <th>{{ total_avaliacoes }} Avaliaç{{ total_avaliacoes|pluralize:"ão,ões" }}</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for nota in avaliacoes_notas %}
+
+
+        <tr class="flex gap-2 justify-center">
+            <td>{% include 'partials/stars.html' with immutable=True rating=nota.nota %}</td>
+            <td>{{ nota.count }}</td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>

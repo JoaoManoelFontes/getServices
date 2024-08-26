@@ -1,0 +1,115 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <div class="w-full">
+        <div class="card card-bordered">
+            <div class="card-body">
+                <h1 class="card-title">Faça seu cadastro</h1>
+                {% include 'partials/form-alerts.html' with messages=messages %}
+
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+
+                    <div class="space-y-2">
+                        <span class="label-text">Eu sou</span>
+
+                        <div class="form-control">
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" name="tipo_usuario" value="cliente"
+                                       class="radio radio-primary radio-sm"
+                                       checked="checked"/>
+                                <span class="label-text">Cliente</span>
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" name="tipo_usuario" value="profissional"
+                                       class="radio radio-primary radio-sm"/>
+                                <span class="label-text">Profissional</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">Usuário</span>
+                        </div>
+                        <input type="text" name="username" placeholder="ruangustavo"
+                               class="input input-bordered w-full"/>
+                    </label>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-2">
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Nome</span>
+                            </div>
+                            <input type="text" name="first_name" placeholder="Ruan"
+                                   class="input input-bordered w-full"/>
+                        </label>
+
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Sobrenome</span>
+                            </div>
+                            <input type="text" name="last_name" placeholder="Gustavo"
+                                   class="input input-bordered w-full"/>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-2">
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Senha</span>
+                            </div>
+                            <input type="password" name="password1" placeholder="********"
+                                   class="input input-bordered w-full"/>
+                        </label>
+
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Confirme sua senha</span>
+                            </div>
+                            <input type="password" name="password2" placeholder="********"
+                                   class="input input-bordered w-full"/>
+                        </label>
+                    </div>
+
+                    <div id="profissional_fields" class="hidden">
+                        <div class="label">
+                            <label for="servico" class="label-text">Serviço oferecido</label>
+                        </div>
+                        <select name="servico" id="servico" class="select select-bordered w-full">
+                            <option disabled selected>Selecione um serviço</option>
+                            {% for servico in servicos %}
+                                <option value="{{ servico.id }}">{{ servico.nome }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <div class="label">
+                            <label for="descricao" class="label-text">Descrição</label>
+                        </div>
+                        <textarea name="descricao" id="descricao" class="textarea textarea-bordered w-full"
+                                  placeholder="Fale um pouco sobre você e os serviços que oferece. Que tipo de trabalho você faz? Como você pode ajudar as pessoas? Descreva sua experiência e habilidades com o seu ofício."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary block">Cadastrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const radioButtons = document.querySelectorAll('input[name="tipo_usuario"]');
+        const clienteFields = document.getElementById('profissional_fields');
+
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (document.querySelector('input[name="tipo_usuario"]:checked').value === 'profissional') {
+                    clienteFields.classList.remove('hidden');
+                } else {
+                    clienteFields.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+{% endblock %}

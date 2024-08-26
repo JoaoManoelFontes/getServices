@@ -1,0 +1,36 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <div class="w-full">
+        <div class="card card-bordered">
+            <div class="card-body">
+                <h1 class="card-title">Faça seu login</h1>
+
+                {% include 'partials/form-alerts.html' with error=message %}
+
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">{{ form.username.label }}</span>
+                        </div>
+                        {{ form.username }}
+                    </label>
+
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">{{ form.password.label }}</span>
+                        </div>
+                        {{ form.password }}
+                    </label>
+
+                    <div class="card-actions items-center justify-between">
+                        <button type="submit" class="btn btn-primary block">Entrar</button>
+                        <a href="{% url 'pagina_cadastro' %}">Não tenho conta</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

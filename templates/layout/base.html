@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="winter">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/daisyui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/typography.min.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{% static 'js/aside.js' %}" defer></script>
+    <script src="{% static 'js/expandable_container.js' %}" defer></script>
+    <script src="{% static 'js/confirm_delete.js' %}" defer></script>
+</head>
+
+<body class="min-h-svh">
+{% include 'partials/header.html' %}
+<div class="flex gap-6 max-w-6xl px-12 m-auto my-8 box-content max-sm:px-8">
+    {% include 'partials/aside.html' %}
+    {% block content %}
+    {% endblock content %}
+</div>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    {{ profissional.user.username }} - {{ profissional.servico.nome }}
+{% endblock title %}
+
+{% block content %}
+    <div class="bg-[url('https://www.simplilearn.com/ice9/free_resources_article_thumb/IsGraphic_DesignAGoodCareerb.jpg')] bg-center h-80 w-full absolute top-20 left-0 bg-no-repeat bg-cover -z-10"></div>
+    <main class="w-full mt-52">
+        <article class="bg-zinc-100 p-8 rounded-md flex gap-8">
+            <div class="w-full flex gap-4 max-md:flex-col">
+                <div class="flex flex-col justify-start items-center gap-4 max-md:flex-row max-md:items-start">
+                    <img class="rounded-md size-36"
+                         src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                         alt="User profile image">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-xl font-bold text-black md:hidden">{{ profissional.user.username }}</h2>
+                        <span class="text-sm">{{ profissional.servico.nome }}</span>
+                        <div class="flex justify-center gap-1 max-md:justify-start">
+                            <span class="inline-block mask mask-star-2 bg-orange-400 size-4"></span>
+                            <span class="text-sm">{{ media_avaliacao|floatformat:1 }} / 5,0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-start items-start gap-2">
+                    <h2 class="text-xl font-bold text-black max-md:hidden">{{ profissional.user.username }}</h2>
+                    <p>{{ profissional.servico.descricao }}</p>
+                </div>
+            </div>
+            <div class="flex justify-center items-center min-w-max max-lg:hidden">
+                {% include 'partials/ratings.html' %}
+            </div>
+        </article>
+        <div class="flex gap-6 mt-8 max-lg:flex-col">
+            <div class="relative">
+                <aside class="min-w-72 flex flex-col gap-4 sticky top-24 max-h-[calc(100vh-7rem)]">
+                    <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
+                        <ul class="mb-4">
+                            <li class="flex justify-start items-center gap-2">
+                                <div class="w-full flex p-3 rounded-md justify-between items-center bg-primary">
+                                    <div class="flex items-center">
+                                        {% include 'icons/email.html' %}
+                                        <span class="text-white ml-1">admin@email.com</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                            {% for horario in horarios %}
+                                <li {% if not horario.vago %} class="cursor-not-allowed opacity-50" {% endif %}>
+                                    {% include 'agendamentos/partials/schedule_card.html' with date=horario.data_inicio|date:"d/m" start_time=horario.data_inicio|date:"H:i" end_time=horario.data_fim|date:"H:i" %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="flex w-full justify-center items-center text-sm pt-2">
+                            <span data-expandable-button
+                                  class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                        </div>
+                    </section>
+                    <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
+                        <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
+                            </li>
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
+                            </li>
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
+                            </li>
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
+                            </li>
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
+                            </li>
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
+                            </li>
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
+                            </li>
+                            <li>
+                                {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
+                            </li>
+                        </ul>
+                        <div class="flex w-full justify-center items-center text-sm pt-2">
+                            <span data-expandable-button
+                                  class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+            <section class="flex flex-col gap-4 grow">
+                {% if pode_avaliar %}
+                    <article class="flex flex-col p-4 bg-zinc-100 gap-4 rounded-md max-sm:gap-2">
+                        <form method="post" class="flex flex-col gap-4">
+                            {% csrf_token %}
+                            <label for="nota" class="form-control">
+                                <div class="label inline">
+                                    <span class="label-text">Nota</span>
+                                </div>
+
+                                <div class="rating">
+                                    <input type="radio" value="1" name="nota" class="bg-orange-400 mask mask-star-2"
+                                           checked="checked"/>
+                                    <input type="radio" value="2" name="nota" class="bg-orange-400 mask mask-star-2"/>
+                                    <input type="radio" value="3" name="nota" class="bg-orange-400 mask mask-star-2"/>
+                                    <input type="radio" value="4" name="nota" class="bg-orange-400 mask mask-star-2"/>
+                                    <input type="radio" value="5" name="nota" class="bg-orange-400 mask mask-star-2"/>
+                                </div>
+                            </label>
+
+                            <label class="form-control" for="comentario">
+                            <textarea
+                                    name="comentario"
+                                    placeholder="Conte-nos como foi sua experiência. O que você achou do serviço prestado? O profissional atendeu suas expectativas? Como o trabalho realizado impactou suas necessidades? Compartilhe detalhes que possam ajudar outras pessoas a entenderem a qualidade do serviço."
+                                    class="textarea textarea-bordered min-h-40"></textarea>
+                            </label>
+                            <div class="flex justify-end">
+                                <input name="avaliacao_comentario" type="submit" class="btn btn-primary btn-sm"/>
+                            </div>
+                        </form>
+
+                    </article>
+                {% endif %}
+
+                {% for avaliacao in avaliacoes %}
+                    {% include 'partials/info_card.html' with name=avaliacao.cliente.user.username rating=avaliacao.nota text=avaliacao.comentario %}
+                {% endfor %}
+
+            </section>
+        </div>
+    </main>
+{% endblock %}
+
+
