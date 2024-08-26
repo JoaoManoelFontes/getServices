@@ -4,19 +4,20 @@
     <div class="relative max-lg:hidden">
         <aside class="min-w-72 flex flex-col gap-4 sticky top-24 max-h-[calc(100vh-7rem)]">
             <div class="flex flex-col gap-4">
-                {% if mostrar_cards_profissional %}
+                {% if is_profissional_autenticado %}
                     <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
                         {% if agendamentos %}
-                            <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                            <ul data-expandable-list
+                                class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
                                 {% for agendamento in agendamentos %}
-                                <li>
-                                    {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" time=agendamento.horario.data_inicio|date:"H:i" %}
-                                </li>
+                                    <li>
+                                        {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" time=agendamento.horario.data_inicio|date:"H:i" %}
+                                    </li>
                                 {% endfor %}
                             </ul>
                             <div class="flex w-full justify-center items-center text-sm pt-2">
                                 <span data-expandable-button
-                                    class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                                      class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
                             </div>
                         {% else %}
                             <p class="text-white text-center">Nenhum agendamento disponível</p>
@@ -24,7 +25,8 @@
                     </section>
                     <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
                         {% if horarios %}
-                            <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                            <ul data-expandable-list
+                                class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
                                 {% for horario in horarios %}
                                     <li {% if not horario.vago %} class="cursor-not-allowed opacity-50" {% endif %}>
                                         {% include 'agendamentos/partials/schedule_card.html' with date=horario.data_inicio|date:"d/m" start_time=horario.data_inicio|date:"H:i" end_time=horario.data_fim|date:"H:i" %}
@@ -33,7 +35,7 @@
                             </ul>
                             <div class="flex w-full justify-center items-center text-sm pt-2">
                                 <span data-expandable-button
-                                class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                                      class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
                             </div>
                         {% else %}
                             <p class="text-white text-center">Nenhum horário disponível</p>
@@ -57,6 +59,20 @@
         </aside>
     </div>
     <main class="flex flex-col gap-4 grow">
+        <form class="flex flex-col md:flex-row gap-2">
+            <input type="text" name="profissional" placeholder="Ruan Gustavo"
+                   class="input input-bordered w-full"/>
+
+            <select name="servico" class="select select-bordered w-full">
+                <option value="todos">Todos</option>
+                {% for servico in servicos %}
+                    <option value="{{ servico.id }}">{{ servico.nome }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
         {% for profissional in profissionais %}
             {% include 'partials/info_card.html' with name=profissional.user.name rating=profissional.media_avaliacao text=profissional.descricao profile=profissional.user.profile_image slug=profissional.slug %}
         {% endfor %}
