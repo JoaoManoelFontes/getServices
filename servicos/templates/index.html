@@ -16,10 +16,12 @@
                                         </li>
                                     {% endfor %}
                                 </ul>
-                                <div class="flex w-full justify-center items-center text-sm pt-2">
-                                <span data-expandable-button
-                                      class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-                                </div>
+                                {% if agendamentos|length > 4 %}
+                                    <div class="flex w-full justify-center items-center text-sm pt-2">
+                                        <span data-expandable-button
+                                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                                    </div>
+                                {% endif %}
                             {% else %}
                                 <p class="text-white text-center">Nenhum agendamento disponível</p>
                             {% endif %}
@@ -34,10 +36,12 @@
                                         </li>
                                     {% endfor %}
                                 </ul>
-                                <div class="flex w-full justify-center items-center text-sm pt-2">
-                                <span data-expandable-button
-                                      class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-                                </div>
+                                {% if horarios|length > 4 %}
+                                    <div class="flex w-full justify-center items-center text-sm pt-2">
+                                        <span data-expandable-button
+                                              class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
+                                    </div>
+                                {% endif %}
                             {% else %}
                                 <p class="text-white text-center">Nenhum horário disponível</p>
                             {% endif %}
