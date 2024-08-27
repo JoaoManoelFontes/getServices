@@ -96,13 +96,24 @@ class PerfilProfissionalView(View):
             .order_by("-nota")
         )
 
+        avaliacoes_existentes = {
+            item["nota"]: item["count"] for item in avaliacoes_notas
+        }
+
+        todas_avaliacoes = [
+            {"nota": nota, "count": avaliacoes_existentes.get(nota, 0)}
+            for nota in range(1, 6)
+        ]
+
+        todas_avaliacoes.sort(key=lambda x: x["nota"], reverse=True)
+
         total_avaliacoes = len(avaliacoes["avaliacoes"])
         media_avaliacao = avaliacoes["media_avaliacao"]
 
         return {
             "avaliacoes": avaliacoes["avaliacoes"],
             "media_avaliacao": media_avaliacao,
-            "avaliacoes_notas": avaliacoes_notas,
+            "avaliacoes_notas": todas_avaliacoes,
             "total_avaliacoes": total_avaliacoes,
         }
 
