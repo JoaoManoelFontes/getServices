@@ -79,10 +79,13 @@ def responder_agendamento(request: HttpRequest, id: int) -> HttpResponse:
 
     if request.method == "POST":
         form = ResponderAgendamentoForm(request.POST, instance=agendamento)
+
         if form.is_valid():
-            form.save()
+            novo_status = form.cleaned_data['status']
+            agendamento.status = novo_status
+            agendamento.horario.vago = novo_status == "Cancelado"
+            agendamento.horario.save()
+            agendamento.save()
             return redirect("pagina_perfil", profissional.slug)
-    else:
-        form = ResponderAgendamentoForm()
 
     return redirect("pagina_perfil", profissional.slug)

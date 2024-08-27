@@ -2,7 +2,7 @@
     <div class="modal-box">
         <h3 class="text-lg font-bold">Faça seu agendamento</h3>
 
-        {% if ha_horario_livre %}
+        {% if has_horario_livre %}
             <form method="post" class="space-y-4">
                 {% csrf_token %}
                 <input type="hidden" name="profissional" id="id_profissional" value="{{ profissional.id }}">
