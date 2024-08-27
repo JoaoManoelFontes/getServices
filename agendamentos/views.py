@@ -81,7 +81,7 @@ def responder_agendamento(request: HttpRequest, id: int) -> HttpResponse:
         form = ResponderAgendamentoForm(request.POST, instance=agendamento)
 
         if form.is_valid():
-            novo_status = form.cleaned_data['status']
+            novo_status = form.cleaned_data["status"]
             agendamento.status = novo_status
             agendamento.horario.vago = novo_status == "Cancelado"
             agendamento.horario.save()
