@@ -1,4 +1,5 @@
-from django.db.models import Avg, Q
+from django.db.models import Avg, F, Value
+from django.db.models.functions import Concat
 from django.views.generic import ListView
 
 from agendamentos import selectors
@@ -25,10 +26,9 @@ class PaginaInicialView(ListView):
 
         nome_profissional = self.request.GET.get("profissional")
         if nome_profissional:
-            queryset = queryset.filter(
-                Q(user__first_name__icontains=nome_profissional)
-                | Q(user__last_name__icontains=nome_profissional)
-            )
+            queryset = queryset.annotate(
+                nome=Concat(F("user__first_name"), Value(" "), F("user__last_name"))
+            ).filter(nome__icontains=nome_profissional)
 
         return queryset
 
