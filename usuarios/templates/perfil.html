@@ -58,7 +58,7 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                        {% if horarios|length > 4 %}
+                        {% if horarios|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
                             <div class="flex w-full justify-center items-center text-sm pt-2">
                             <span data-expandable-button
                                   class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
@@ -103,7 +103,7 @@
                                 {% include 'agendamentos/partials/appointment_card.html' with date="08/11" start_time="13:00" end_time="13:30" %}
                             </li>
                         </ul>
-                        {% if agendamentos|length > 4 %}
+                        {% if agendamentos|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
                             <div class="flex w-full justify-center items-center text-sm pt-2">
                             <span data-expandable-button
                                   class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
