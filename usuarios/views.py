@@ -13,13 +13,14 @@ from agendamentos.models import Agendamento
 from avaliacoes import selectors as avaliacoes_selectors
 from avaliacoes.forms import AvaliacaoForm
 from avaliacoes.models import Avaliacao
+from core.views import BaseProfissionalAutenticadoView
 from servicos.models import Servico
 
 from .forms import LoginForm, RegistrarForm
 from .models import Cliente, Profissional
 
 
-class PerfilProfissionalView(View):
+class PerfilProfissionalView(View, BaseProfissionalAutenticadoView):
     model = Profissional
     template_name = "perfil.html"
 
@@ -32,6 +33,8 @@ class PerfilProfissionalView(View):
         schedule_data = agendamentos_selectors.get_profissional_schedule(profissional)
         horarios = schedule_data["horarios"]
 
+        profissional_autenticado = self.get_profissional_autenticado()
+
         return {
             "profissional": profissional,
             "pode_avaliar": pode_avaliar,
@@ -39,6 +42,7 @@ class PerfilProfissionalView(View):
             "agendamentos": schedule_data["agendamentos"],
             "avaliacoes": avaliacoes["avaliacoes"],
             "horarios": horarios,
+            "is_profissional_autenticado": bool(profissional_autenticado),
             **avaliacoes,
         }
 

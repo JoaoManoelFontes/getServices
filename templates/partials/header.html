@@ -10,9 +10,11 @@
         </div>
         <nav class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1 text-white">
-                <li>
-                    <a href="{% url 'horarios_resumo' %}">Horários</a>
-                </li>
+                {% if is_profissional_autenticado %}
+                    <li>
+                        <a href="{% url 'horarios_resumo' %}">Horários</a>
+                    </li>
+                {% endif %}
                 <li>
                     <details>
                         <summary class="text-white">Parent</summary>

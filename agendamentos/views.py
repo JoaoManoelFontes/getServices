@@ -27,7 +27,9 @@ def cadastrar_horario(request: HttpRequest) -> HttpResponse:
     else:
         form = HorarioForm()
 
-    return render(request, "cadastrar_horario.html", {"form": form})
+    context = {"form": form, "is_profissional_autenticado": True}
+
+    return render(request, "cadastrar_horario.html", context=context)
 
 
 @profissional_required
@@ -43,6 +45,7 @@ def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
             "ano": ano,
             "mes": mes,
             "view_type": "detalhes",
+            "is_profissional_autenticado": True,
         }
 
     else:  # Lista o número de horários de cada mês
@@ -57,6 +60,7 @@ def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
         context = {
             "resumo_meses": resumos_meses,
             "view_type": "resumo",
+            "is_profissional_autenticado": True,
         }
 
     return render(

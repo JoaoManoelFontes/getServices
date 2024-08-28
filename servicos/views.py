@@ -3,11 +3,12 @@ from django.db.models.functions import Concat
 from django.views.generic import ListView
 
 from agendamentos import selectors
+from core.views import BaseProfissionalAutenticadoView
 from servicos.models import Servico
 from usuarios.models import Profissional
 
 
-class PaginaInicialView(ListView):
+class PaginaInicialView(ListView, BaseProfissionalAutenticadoView):
     model = Profissional
     template_name = "index.html"
     context_object_name = "profissionais"
@@ -50,12 +51,3 @@ class PaginaInicialView(ListView):
             context["agendamentos"] = schedule_data["agendamentos"]
 
         return context
-
-    def get_profissional_autenticado(self):
-        return (
-            Profissional.objects.filter(user=self.request.user)
-            .select_related("servico")
-            .first()
-            if self.request.user.is_authenticated
-            else None
-        )
