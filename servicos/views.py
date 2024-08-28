@@ -51,9 +51,7 @@ class PaginaInicialView(ListView, BaseUsuarioAutenticadoView):
             context["meus_agendamentos"] = schedule_data["agendamentos"]
         elif cliente_autenticado:
             context["is_cliente_autenticado"] = True
-            schedule_data = selectors.get_cliente_schedule(
-                cliente_autenticado
-            )
+            schedule_data = selectors.get_cliente_schedule(cliente_autenticado)
             context["meus_agendamentos"] = schedule_data["agendamentos"]
 
         return context

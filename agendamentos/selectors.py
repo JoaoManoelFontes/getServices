@@ -22,6 +22,7 @@ def get_profissional_schedule(profissional: Profissional) -> dict:
         "agendamentos": agendamentos,
     }
 
+
 def get_cliente_schedule(cliente: Cliente) -> dict:
     """Retorna os agendamentos do cliente a partir da data atual, com limite de 25 itens cada"""
     data_atual = timezone.now()
@@ -30,6 +31,4 @@ def get_cliente_schedule(cliente: Cliente) -> dict:
         cliente=cliente, horario__data_inicio__gte=data_atual
     ).select_related("horario")[:25]
 
-    return {
-        "agendamentos": agendamentos
-    }
+    return {"agendamentos": agendamentos}

@@ -10,8 +10,10 @@ class BaseUsuarioAutenticadoView:
             if self.request.user.is_authenticated
             else None
         )
-    
+
     def get_cliente_autenticado(self):
         return (
-            Cliente.objects.filter(user=self.request.user).first() if self.request.user.is_authenticated else None
+            Cliente.objects.filter(user=self.request.user).first()
+            if self.request.user.is_authenticated
+            else None
         )

@@ -49,11 +49,15 @@ class PerfilProfissionalView(View, BaseUsuarioAutenticadoView):
         }
 
         if profissional_autenticado:
-            schedule_data = agendamentos_selectors.get_profissional_schedule(profissional_autenticado)
+            schedule_data = agendamentos_selectors.get_profissional_schedule(
+                profissional_autenticado
+            )
             context["meus_agendamentos"] = schedule_data["agendamentos"]
             context["meus_horarios"] = schedule_data["horarios"]
         elif cliente_autenticado:
-            context["meus_agendamentos"] = agendamentos_selectors.get_cliente_schedule(cliente_autenticado)["agendamentos"]
+            context["meus_agendamentos"] = agendamentos_selectors.get_cliente_schedule(
+                cliente_autenticado
+            )["agendamentos"]
 
         return context
 
