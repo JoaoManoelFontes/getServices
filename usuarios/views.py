@@ -13,14 +13,14 @@ from agendamentos.models import Agendamento
 from avaliacoes import selectors as avaliacoes_selectors
 from avaliacoes.forms import AvaliacaoForm
 from avaliacoes.models import Avaliacao
-from core.views import BaseProfissionalAutenticadoView
+from core.views import BaseUsuarioAutenticadoView
 from servicos.models import Servico
 
 from .forms import LoginForm, RegistrarForm
 from .models import Cliente, Profissional
 
 
-class PerfilProfissionalView(View, BaseProfissionalAutenticadoView):
+class PerfilProfissionalView(View, BaseUsuarioAutenticadoView):
     model = Profissional
     template_name = "perfil.html"
 
@@ -34,8 +34,9 @@ class PerfilProfissionalView(View, BaseProfissionalAutenticadoView):
         horarios = schedule_data["horarios"]
 
         profissional_autenticado = self.get_profissional_autenticado()
+        cliente_autenticado = self.get_cliente_autenticado()
 
-        return {
+        context = {
             "profissional": profissional,
             "pode_avaliar": pode_avaliar,
             "has_horario_livre": any(horario.vago for horario in horarios),
@@ -43,8 +44,18 @@ class PerfilProfissionalView(View, BaseProfissionalAutenticadoView):
             "avaliacoes": avaliacoes["avaliacoes"],
             "horarios": horarios,
             "is_profissional_autenticado": bool(profissional_autenticado),
+            "is_cliente_autenticado": bool(cliente_autenticado),
             **avaliacoes,
         }
+
+        if profissional_autenticado:
+            schedule_data = agendamentos_selectors.get_profissional_schedule(profissional_autenticado)
+            context["meus_agendamentos"] = schedule_data["agendamentos"]
+            context["meus_horarios"] = schedule_data["horarios"]
+        elif cliente_autenticado:
+            context["meus_agendamentos"] = agendamentos_selectors.get_cliente_schedule(cliente_autenticado)["agendamentos"]
+
+        return context
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(self.kwargs.get("slug"), request)

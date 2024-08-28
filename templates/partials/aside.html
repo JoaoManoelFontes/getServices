@@ -1,0 +1,83 @@
+<div data-menu-background class="bg-zinc-800 fixed inset-0 opacity-75 hidden z-10"></div>
+<aside data-menu class="bg-blue-700 min-w-80 h-screen flex flex-col fixed top-0 pt-16 right-full transition-all z-20 overflow-auto">
+  <span data-menu-close class="text-[3rem] w-8 h-8 leading-8 text-white absolute top-4 right-4 cursor-pointer">
+    &times;
+  </span>
+    {% if is_profissional_autenticado %}
+      <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
+        <h2 class="text-white text-xl">Agendamentos</h2>
+        {% if meus_agendamentos %}
+          <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+            {% for agendamento in meus_agendamentos %}
+            <li>
+                {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" start_time=agendamento.horario.data_inicio|date:"H:i" end_time=agendamento.horario.data_fim|date:"H:i" %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% if meus_agendamentos|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+            <div class="flex w-full justify-center items-center text-sm pt-2">
+              <span
+                data-expandable-button
+                class="text-white cursor-pointer hover:scale-105 transition-transform"
+              >
+                Ver Mais ↓
+              </span>
+            </div>
+          {% endif %}
+        {% else %}
+          <p class="text-white p-4">Nenhum agendamento cadastrado</p>
+        {% endif %}
+      </section>
+      <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
+        <h2 class="text-white text-xl">Horários</h2>
+          {% if meus_horarios %}
+            <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+              {% for horario in meus_horarios %}
+                <li {% if not horario.vago %} class="cursor-not-allowed opacity-50" {% endif %}>
+                  {% include 'agendamentos/partials/schedule_card.html' with date=horario.data_inicio|date:"d/m" start_time=horario.data_inicio|date:"H:i" end_time=horario.data_fim|date:"H:i" %}
+                </li>
+              {% endfor %}
+            </ul>
+            {% if meus_horarios|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+              <div class="flex w-full justify-center items-center text-sm pt-2">
+                <span
+                  data-expandable-button
+                  class="text-white cursor-pointer hover:scale-105 transition-transform"
+                >
+                  Ver Mais ↓
+                </span>
+              </div>
+            {% endif %}
+          {% else %}
+            <p class="text-white text-center">Nenhum horário cadastrado</p>
+          {% endif %}
+      </section>
+    {% elif is_cliente_autenticado %}
+      <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
+        <h2 class="text-white text-xl">Agendamentos</h2>
+        {% if meus_agendamentos %}
+          <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+            {% for agendamento in meus_agendamentos %}
+            <li>
+                {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" start_time=agendamento.horario.data_inicio|date:"H:i" end_time=agendamento.horario.data_fim|date:"H:i" %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% if meus_agendamentos|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+            <div class="flex w-full justify-center items-center text-sm pt-2">
+              <span
+                data-expandable-button
+                class="text-white cursor-pointer hover:scale-105 transition-transform"
+              >
+                Ver Mais ↓
+              </span>
+            </div>
+          {% endif %}
+        {% else %}
+          <p class="text-white text-center">Nenhum horário cadastrado</p>
+        {% endif %}      
+      </section>
+    {% else %}
+      <p class="text-white p-4">Faça login para realizar seus agendamentos</p>
+    {% endif %}
+</aside>

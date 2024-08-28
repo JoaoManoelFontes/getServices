@@ -3,12 +3,12 @@ from django.db.models.functions import Concat
 from django.views.generic import ListView
 
 from agendamentos import selectors
-from core.views import BaseProfissionalAutenticadoView
+from core.views import BaseUsuarioAutenticadoView
 from servicos.models import Servico
 from usuarios.models import Profissional
 
 
-class PaginaInicialView(ListView, BaseProfissionalAutenticadoView):
+class PaginaInicialView(ListView, BaseUsuarioAutenticadoView):
     model = Profissional
     template_name = "index.html"
     context_object_name = "profissionais"
@@ -36,18 +36,24 @@ class PaginaInicialView(ListView, BaseProfissionalAutenticadoView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["servicos"] = Servico.objects.all()
-        context["agendamentos"] = []
-        context["horarios"] = []
         context["is_profissional_autenticado"] = False
+        context["is_cliente_autenticado"] = False
 
         profissional_autenticado = self.get_profissional_autenticado()
+        cliente_autenticado = self.get_cliente_autenticado()
 
         if profissional_autenticado:
             context["is_profissional_autenticado"] = True
             schedule_data = selectors.get_profissional_schedule(
                 profissional_autenticado
             )
-            context["horarios"] = schedule_data["horarios"]
-            context["agendamentos"] = schedule_data["agendamentos"]
+            context["meus_horarios"] = schedule_data["horarios"]
+            context["meus_agendamentos"] = schedule_data["agendamentos"]
+        elif cliente_autenticado:
+            context["is_cliente_autenticado"] = True
+            schedule_data = selectors.get_cliente_schedule(
+                cliente_autenticado
+            )
+            context["meus_agendamentos"] = schedule_data["agendamentos"]
 
         return context

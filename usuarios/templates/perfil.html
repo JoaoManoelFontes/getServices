@@ -99,9 +99,6 @@
                                     {% endif %}
                                 </li>
                             {% endfor %}
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" start_time="13:00" end_time="13:30" %}
-                            </li>
                         </ul>
                         {% if agendamentos|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
                             <div class="flex w-full justify-center items-center text-sm pt-2">

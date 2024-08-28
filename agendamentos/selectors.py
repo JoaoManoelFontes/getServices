@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from usuarios.models import Profissional
+from usuarios.models import Cliente, Profissional
 
 from .models import Agendamento, Horario
 
@@ -20,4 +20,16 @@ def get_profissional_schedule(profissional: Profissional) -> dict:
     return {
         "horarios": horarios,
         "agendamentos": agendamentos,
+    }
+
+def get_cliente_schedule(cliente: Cliente) -> dict:
+    """Retorna os agendamentos do cliente a partir da data atual, com limite de 25 itens cada"""
+    data_atual = timezone.now()
+
+    agendamentos = Agendamento.objects.filter(
+        cliente=cliente, horario__data_inicio__gte=data_atual
+    ).select_related("horario")[:25]
+
+    return {
+        "agendamentos": agendamentos
     }
