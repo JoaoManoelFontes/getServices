@@ -19,7 +19,6 @@ def cadastrar_horario(request: HttpRequest) -> HttpResponse:
             horario.profissional = Profissional.objects.filter(
                 user=request.user,
             ).first()
-            horario.save()
 
             horarios_recorrentes = horario.gerar_horarios_recorrentes()
             Horario.objects.bulk_create(horarios_recorrentes)
