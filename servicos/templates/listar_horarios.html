@@ -27,6 +27,11 @@
                             <span class="text-sm text-gray-600 ml-2">{{ resumo_mes.count }} horários</span>
                         </li>
                     {% endwith %}
+                    {% empty %}
+                    <div role="alert" class="alert">
+                        {% include 'icons/info.html' %}
+                        <p>Você não possui nenhum horário cadastrado.</p>
+                    </div>
                 {% endfor %}
             </ul>
 
