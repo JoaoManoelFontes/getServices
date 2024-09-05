@@ -13,13 +13,14 @@ from agendamentos.models import Agendamento
 from avaliacoes import selectors as avaliacoes_selectors
 from avaliacoes.forms import AvaliacaoForm
 from avaliacoes.models import Avaliacao
+from core.views import BaseUsuarioAutenticadoView
 from servicos.models import Servico
 
 from .forms import LoginForm, RegistrarForm
 from .models import Cliente, Profissional
 
 
-class PerfilProfissionalView(View):
+class PerfilProfissionalView(View, BaseUsuarioAutenticadoView):
     model = Profissional
     template_name = "perfil.html"
 
@@ -30,28 +31,35 @@ class PerfilProfissionalView(View):
 
         avaliacoes = self.get_avaliacoes_data(profissional)
         schedule_data = agendamentos_selectors.get_profissional_schedule(profissional)
-
         horarios = schedule_data["horarios"]
 
-        ha_horario_livre = False
-        for horario in horarios:
-            if horario.vago:
-                ha_horario_livre = True
-                break
+        profissional_autenticado = self.get_profissional_autenticado()
+        cliente_autenticado = self.get_cliente_autenticado()
 
-        # TODO: adicionar listagem de agendamentos no template do perfil
-        agendamentos = schedule_data["agendamentos"]
-
-        return {
+        context = {
             "profissional": profissional,
             "pode_avaliar": pode_avaliar,
-            "agendamentos": agendamentos,
-            "profissional": profissional,
-            "ha_horario_livre": ha_horario_livre,
-            "agendamentos": agendamentos,
+            "has_horario_livre": any(horario.vago for horario in horarios),
+            "agendamentos": schedule_data["agendamentos"],
+            "avaliacoes": avaliacoes["avaliacoes"],
             "horarios": horarios,
+            "is_profissional_autenticado": bool(profissional_autenticado),
+            "is_cliente_autenticado": bool(cliente_autenticado),
             **avaliacoes,
         }
+
+        if profissional_autenticado:
+            schedule_data = agendamentos_selectors.get_profissional_schedule(
+                profissional_autenticado
+            )
+            context["meus_agendamentos"] = schedule_data["agendamentos"]
+            context["meus_horarios"] = schedule_data["horarios"]
+        elif cliente_autenticado:
+            context["meus_agendamentos"] = agendamentos_selectors.get_cliente_schedule(
+                cliente_autenticado
+            )["agendamentos"]
+
+        return context
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(self.kwargs.get("slug"), request)
@@ -96,13 +104,24 @@ class PerfilProfissionalView(View):
             .order_by("-nota")
         )
 
+        avaliacoes_existentes = {
+            item["nota"]: item["count"] for item in avaliacoes_notas
+        }
+
+        todas_avaliacoes = [
+            {"nota": nota, "count": avaliacoes_existentes.get(nota, 0)}
+            for nota in range(1, 6)
+        ]
+
+        todas_avaliacoes.sort(key=lambda x: x["nota"], reverse=True)
+
         total_avaliacoes = len(avaliacoes["avaliacoes"])
         media_avaliacao = avaliacoes["media_avaliacao"]
 
         return {
             "avaliacoes": avaliacoes["avaliacoes"],
             "media_avaliacao": media_avaliacao,
-            "avaliacoes_notas": avaliacoes_notas,
+            "avaliacoes_notas": todas_avaliacoes,
             "total_avaliacoes": total_avaliacoes,
         }
 

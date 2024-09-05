@@ -19,7 +19,6 @@ def cadastrar_horario(request: HttpRequest) -> HttpResponse:
             horario.profissional = Profissional.objects.filter(
                 user=request.user,
             ).first()
-            horario.save()
 
             horarios_recorrentes = horario.gerar_horarios_recorrentes()
             Horario.objects.bulk_create(horarios_recorrentes)
@@ -27,7 +26,9 @@ def cadastrar_horario(request: HttpRequest) -> HttpResponse:
     else:
         form = HorarioForm()
 
-    return render(request, "cadastrar_horario.html", {"form": form})
+    context = {"form": form, "is_profissional_autenticado": True}
+
+    return render(request, "cadastrar_horario.html", context=context)
 
 
 @profissional_required
@@ -43,6 +44,7 @@ def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
             "ano": ano,
             "mes": mes,
             "view_type": "detalhes",
+            "is_profissional_autenticado": True,
         }
 
     else:  # Lista o número de horários de cada mês
@@ -57,6 +59,7 @@ def listar_horarios(request: HttpRequest, ano=None, mes=None) -> HttpResponse:
         context = {
             "resumo_meses": resumos_meses,
             "view_type": "resumo",
+            "is_profissional_autenticado": True,
         }
 
     return render(
@@ -79,10 +82,13 @@ def responder_agendamento(request: HttpRequest, id: int) -> HttpResponse:
 
     if request.method == "POST":
         form = ResponderAgendamentoForm(request.POST, instance=agendamento)
+
         if form.is_valid():
-            form.save()
+            novo_status = form.cleaned_data["status"]
+            agendamento.status = novo_status
+            agendamento.horario.vago = novo_status == "Cancelado"
+            agendamento.horario.save()
+            agendamento.save()
             return redirect("pagina_perfil", profissional.slug)
-    else:
-        form = ResponderAgendamentoForm()
 
     return redirect("pagina_perfil", profissional.slug)

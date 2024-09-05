@@ -3,97 +3,81 @@
   <span data-menu-close class="text-[3rem] w-8 h-8 leading-8 text-white absolute top-4 right-4 cursor-pointer">
     &times;
   </span>
-    <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
+    {% if is_profissional_autenticado %}
+      <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
         <h2 class="text-white text-xl">Agendamentos</h2>
-        <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+        {% if meus_agendamentos %}
+          <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+            {% for agendamento in meus_agendamentos %}
             <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" time="13:00" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="21/11" time="15:20" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="09/12" time="07:45" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/appointment_card.html' with date="23/12" time="12:30" %}
-            </li>
-        </ul>
-        <div class="flex w-full justify-center items-center text-sm pt-2">
-            <span data-expandable-button class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-        </div>
-    </section>
-    <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
+                {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" start_time=agendamento.horario.data_inicio|date:"H:i" end_time=agendamento.horario.data_fim|date:"H:i" %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% if meus_agendamentos|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+            <div class="flex w-full justify-center items-center text-sm pt-2">
+              <span
+                data-expandable-button
+                class="text-white cursor-pointer hover:scale-105 transition-transform"
+              >
+                Ver Mais ↓
+              </span>
+            </div>
+          {% endif %}
+        {% else %}
+          <p class="text-white p-4">Nenhum agendamento cadastrado</p>
+        {% endif %}
+      </section>
+      <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
         <h2 class="text-white text-xl">Horários</h2>
-        <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+          {% if meus_horarios %}
+            <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+              {% for horario in meus_horarios %}
+                <li {% if not horario.vago %} class="cursor-not-allowed opacity-50" {% endif %}>
+                  {% include 'agendamentos/partials/schedule_card.html' with date=horario.data_inicio|date:"d/m" start_time=horario.data_inicio|date:"H:i" end_time=horario.data_fim|date:"H:i" %}
+                </li>
+              {% endfor %}
+            </ul>
+            {% if meus_horarios|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+              <div class="flex w-full justify-center items-center text-sm pt-2">
+                <span
+                  data-expandable-button
+                  class="text-white cursor-pointer hover:scale-105 transition-transform"
+                >
+                  Ver Mais ↓
+                </span>
+              </div>
+            {% endif %}
+          {% else %}
+            <p class="text-white text-center">Nenhum horário cadastrado</p>
+          {% endif %}
+      </section>
+    {% elif is_cliente_autenticado %}
+      <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
+        <h2 class="text-white text-xl">Agendamentos</h2>
+        {% if meus_agendamentos %}
+          <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+            {% for agendamento in meus_agendamentos %}
             <li>
-                {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00" end_time="14:15" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20" end_time="16:20" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/schedule_card.html' with date="09/12" start_time="07:45" end_time="9:30" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/schedule_card.html' with date="23/12" start_time="12:30" end_time="17:30" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/schedule_card.html' with date="08/11" start_time="13:00" end_time="14:15" %}
-            </li>
-            <li>
-                {% include 'agendamentos/partials/schedule_card.html' with date="21/11" start_time="15:20" end_time="16:20" %}
-            </li>
-        </ul>
-        <div class="flex w-full justify-center items-center text-sm pt-2">
-            <span data-expandable-button class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-        </div>
-    </section>
-    <section data-expandable-container class="p-4 flex flex-col gap-2 rounded-md">
-        <h2 class="text-white text-xl">Serviços</h2>
-        <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
-            <li>
-                {% include 'partials/services_card.html' with service="Construção Civil" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Cuidados Domésticos" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Artes Gráficas" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Construção Civil" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Cuidados Domésticos" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Artes Gráficas" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Construção Civil" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Cuidados Domésticos" %}
-            </li>
-            <li>
-                {% include 'partials/services_card.html' with service="Artes Gráficas" %}
-            </li>
-        </ul>
-        <div class="flex w-full justify-center items-center text-sm pt-2">
-            <span data-expandable-button class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-        </div>
-    </section>
+                {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" start_time=agendamento.horario.data_inicio|date:"H:i" end_time=agendamento.horario.data_fim|date:"H:i" %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% if meus_agendamentos|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+            <div class="flex w-full justify-center items-center text-sm pt-2">
+              <span
+                data-expandable-button
+                class="text-white cursor-pointer hover:scale-105 transition-transform"
+              >
+                Ver Mais ↓
+              </span>
+            </div>
+          {% endif %}
+        {% else %}
+          <p class="text-white text-center">Nenhum horário cadastrado</p>
+        {% endif %}      
+      </section>
+    {% else %}
+      <p class="text-white p-4">Faça login para realizar seus agendamentos</p>
+    {% endif %}
 </aside>

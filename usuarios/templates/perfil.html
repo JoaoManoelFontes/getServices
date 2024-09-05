@@ -50,17 +50,20 @@
                                 </div>
                             </li>
                         </ul>
-                        <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                        <ul data-expandable-list
+                            class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all duration-300 ease-in-out">
                             {% for horario in horarios %}
                                 <li {% if not horario.vago %} class="cursor-not-allowed opacity-50" {% endif %}>
                                     {% include 'agendamentos/partials/schedule_card.html' with date=horario.data_inicio|date:"d/m" start_time=horario.data_inicio|date:"H:i" end_time=horario.data_fim|date:"H:i" %}
                                 </li>
                             {% endfor %}
                         </ul>
-                        <div class="flex w-full justify-center items-center text-sm pt-2">
+                        {% if horarios|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+                            <div class="flex w-full justify-center items-center text-sm pt-2">
                             <span data-expandable-button
                                   class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-                        </div>
+                            </div>
+                        {% endif %}
                     </section>
                     <section data-expandable-container class="p-4 bg-blue-500 rounded-md">
                         <div class="flex justify-between mb-4">
@@ -71,14 +74,16 @@
                                 </button>
                             {% endif %}
                         </div>
-                        <ul data-expandable-list class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
+                        <ul data-expandable-list
+                            class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all duration-300 ease-in-out">
                             {% for agendamento in agendamentos %}
                                 <li data-appointment-container>
                                     <span class="relative z-10">
                                         {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" start_time=agendamento.horario.data_inicio|date:"H:i" end_time=agendamento.horario.data_fim|date:"H:i" %}
                                     </span>
                                     {% if agendamento.status == "Pendente" and agendamento.profissional.user == user %}
-                                        <form class="bg-blue-400 rounded-b-md h-8 relative -top-1 flex justify-start items-center gap-2 px-4" action="{% url 'responder_agendamento' agendamento.id %}" method="post">
+                                        <form class="bg-blue-400 rounded-b-md h-8 relative -top-1 flex justify-start items-center gap-2 px-4"
+                                              action="{% url 'responder_agendamento' agendamento.id %}" method="post">
                                             {% csrf_token %}
                                             <input class="hidden" data-approve-input type="radio" name="status"
                                                    id="id_status" value="Concluido">
@@ -94,14 +99,13 @@
                                     {% endif %}
                                 </li>
                             {% endfor %}
-                            <li>
-                                {% include 'agendamentos/partials/appointment_card.html' with date="08/11" start_time="13:00" end_time="13:30" %}
-                            </li>
                         </ul>
-                        <div class="flex w-full justify-center items-center text-sm pt-2">
+                        {% if agendamentos|length > MAX_ITENS_CONTAINER_EXPANSIVEL %}
+                            <div class="flex w-full justify-center items-center text-sm pt-2">
                             <span data-expandable-button
                                   class="text-white cursor-pointer hover:scale-105 transition-transform">Ver Mais ↓</span>
-                        </div>
+                            </div>
+                        {% endif %}
                     </section>
                 </aside>
             </div>
