@@ -63,7 +63,6 @@ class Horario(models.Model):
 
     def gerar_horarios_recorrentes(self):
         if self.frequencia == "UNICA":
-            print("chegou aqui papai")
             return [self]
 
         duracao = self.data_fim - self.data_inicio
