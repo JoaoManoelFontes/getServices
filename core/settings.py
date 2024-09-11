@@ -17,6 +17,20 @@ from django.core.management.utils import get_random_secret_key
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+if not all(
+    k in os.environ
+    for k in (
+        "DJANGO_SECRET_KEY",
+        "DJANGO_DB_ENGINE",
+        "DB_NAME",
+        "DB_USER",
+        "DB_PASSWORD",
+        "DB_HOST",
+        "DB_PORT",
+    )
+):
+    raise ValueError("Some environment variables are not set")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
