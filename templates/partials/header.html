@@ -10,9 +10,11 @@
         </div>
         <nav class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1 text-white">
-                <li>
-                    <a href="{% url 'horarios_resumo' %}">Horários</a>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'horarios_resumo' %}">Horários</a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
         <div>
