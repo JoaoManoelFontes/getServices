@@ -12,7 +12,7 @@
                                     class="flex flex-col gap-2 max-h-40 overflow-hidden transition-all">
                                     {% for agendamento in agendamentos %}
                                         <li>
-                                            {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" time=agendamento.horario.data_inicio|date:"H:i" %}
+                                            {% include 'agendamentos/partials/appointment_card.html' with date=agendamento.horario.data_inicio|date:"d/m" start_time=agendamento.horario.data_inicio|date:"H:i" end_time=agendamento.horario.data_fim|date:"H:i" %}
                                         </li>
                                     {% endfor %}
                                 </ul>
